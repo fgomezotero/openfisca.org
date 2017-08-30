@@ -7,6 +7,7 @@ mv _book doc
 rm --recursive --force openfisca.org/doc
 mv doc openfisca.org/doc
 cd openfisca.org
+git fetch  # Make sure we are up to date with git remote branches
 git add .
 git config --global user.name "OpenFisca-Bot"
 git config --global user.email "contact@openfisca.fr"
