@@ -53,7 +53,7 @@
         data-chapter-title="Coding a formula: basic example"
         data-filepath="coding-the-legislation/10_basic_example.md"
         data-basepath=".."
-        data-revision="Wed Aug 30 2017 19:57:26 GMT+0000 (UTC)"
+        data-revision="Wed Aug 30 2017 20:04:08 GMT+0000 (UTC)"
         data-innerlanguage="">
     
 
@@ -870,12 +870,12 @@
     label = <span class="hljs-string">u&quot;Individualized and monthly paid tax on salaries&quot;</span>
     definition_period = MONTH
 
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">formula</span><span class="hljs-params">(person, period, legislation)</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">formula</span><span class="hljs-params">(person, period, parameters)</span>:</span>
         salary = person(<span class="hljs-string">&apos;salary&apos;</span>, period)
 
-        <span class="hljs-keyword">return</span> salary * legislation(period).taxes.salary.rate
+        <span class="hljs-keyword">return</span> salary * parameters(period).taxes.salary.rate
 </code></pre>
-<p><code>legislation</code> is here a function that be be called for a given period, and returns the whole legislation (in a hierarchical tree structure). You can get the parameter you are interested in by navigating this tree with the <code>.</code> notation.</p>
+<p><code>parameters</code> is here a function that be be called for a given period, and returns the whole legislation parameters (in a hierarchical tree structure). You can get the parameter you are interested in by navigating this tree with the <code>.</code> notation.</p>
 
                     
                     </section>

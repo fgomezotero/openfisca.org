@@ -53,7 +53,7 @@
         data-chapter-title="Parameters"
         data-filepath="coding-the-legislation/legislation_parameters.md"
         data-basepath=".."
-        data-revision="Wed Aug 30 2017 19:57:26 GMT+0000 (UTC)"
+        data-revision="Wed Aug 30 2017 20:04:08 GMT+0000 (UTC)"
         data-innerlanguage="">
     
 
@@ -803,69 +803,132 @@
                 
                     <section class="normal" id="section-">
                     
-                        <h1 id="legislation-parameters">Legislation parameters</h1>
-<h2 id="definition">Definition</h2>
-<p>The legislation parameters are stored in XML files in the directory <code>parameters</code> (<a href="https://github.com/openfisca/openfisca-france/blob/master/openfisca_france/parameters" target="_blank">example in OpenFisca-France</a>).</p>
-<p>Those files contain parameters which can be simple parameters (<code>&lt;CODE&gt;</code> tags) or scales (<code>&lt;BAREME&gt;</code> tags).</p>
-<p>Parameters are organised in a tree defined by <code>&lt;NODE&gt;</code> tags.</p>
-<p>Here is a simple parameter example:</p>
-<pre><code class="lang-xml"><span class="hljs-tag">&lt;<span class="hljs-title">CODE</span> <span class="hljs-attribute">code</span>=<span class="hljs-value">&quot;full_rate&quot;</span> <span class="hljs-attribute">description</span>=<span class="hljs-value">&quot;Full rate of social security protections&quot;</span> <span class="hljs-attribute">format</span>=<span class="hljs-value">&quot;percent&quot;</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-title">VALUE</span> <span class="hljs-attribute">deb</span>=<span class="hljs-value">&quot;2005-01-01&quot;</span> <span class="hljs-attribute">valeur</span>=<span class="hljs-value">&quot;.042&quot;</span> /&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-title">VALUE</span> <span class="hljs-attribute">deb</span>=<span class="hljs-value">&quot;1998-01-01&quot;</span> <span class="hljs-attribute">valeur</span>=<span class="hljs-value">&quot;.038&quot;</span> /&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-title">VALUE</span> <span class="hljs-attribute">deb</span>=<span class="hljs-value">&quot;1997-01-01&quot;</span> <span class="hljs-attribute">valeur</span>=<span class="hljs-value">&quot;.01&quot;</span> /&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-title">CODE</span>&gt;</span>
+                        <h1 id="implementing-legislation-parameters">Implementing legislation parameters</h1>
+<p><a href="../parameters.html">Legislation parameters</a> can be found in the <code>parameters</code> directory of your country package.</p>
+<p>The parameters are organized with in a <a href="https://en.wikipedia.org/wiki/Tree_structure" target="_blank">tree structure</a>.</p>
+<blockquote>
+<p><strong>Example</strong>: <code>tax_on_salary.public_sector.rate</code> can be found in <code>parameters/tax_on_salary/public_sector/rate.yml</code>.</p>
+</blockquote>
+<p>Example of a <code>parameters</code> directory:</p>
+<ul>
+<li>parameters<ul>
+<li>tax_on_salary<ul>
+<li><strong>tax_scale.yaml</strong></li>
+<li>public_sector<ul>
+<li><strong>rate.yaml</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>universal_income<ul>
+<li><strong>minimum_age.yaml</strong></li>
+<li><strong>amount.yaml</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>In this file structure:</p>
+<ul>
+<li><code>tax_on_salaries</code>, <code>tax_on_salary.public_sector</code>, <code>universal_income</code> are <strong>nodes</strong>;</li>
+<li><code>tax_on_salaries.tax_scale</code>, <code>tax_on_salary.public_sector.rate</code>,<code>universal_income.minimum_age</code>,<code>universal_income.amount</code> are <strong>parameters</strong> (or scales).</li>
+</ul>
+<h2 id="how-to-write-a-new-parameter">How to write a new parameter</h2>
+<blockquote>
+<p>if you wish to update a parameter, read our <a href="40_legislation_evolutions.html">legislation evolution page</a>.</p>
+</blockquote>
+<ol>
+<li>Find where the parameter fits</li>
+</ol>
+<p>A parameter is located inside a <strong>node</strong>, that has the same name as the directory it is contained in.</p>
+<blockquote>
+<p><strong>Example</strong>: <code>tax_on_salary.public_sector</code> is the node that contains the <code>tax_on_salary.public_sector.rate</code>parameter.</p>
+</blockquote>
+<ol>
+<li>Create a new parameter YAML file</li>
+</ol>
+<p>A legislative parameter is defined by a YAML file of the same name. Possible attributes are:</p>
+<ul>
+<li><code>description</code> (optional) Description;</li>
+<li><code>reference</code> (optional) Legislative reference;</li>
+<li><code>unit</code> (optional) Can be:<ul>
+<li><code>year</code> : The values are years;</li>
+<li><code>currency</code>: The values are in the unit of currency of the country;</li>
+<li><code>/1</code>: The values are percentages, with <code>1.0</code>=100%;</li>
+</ul>
+</li>
+<li><code>values</code>: Value of the parameter for several dates.</li>
+</ul>
+<p>Sample file <code>parameters/universal_income/amount.yaml</code></p>
+<pre><code class="lang-yaml">description: Universal income
+unit: currency
+values:
+  1993-01-01:
+    value: 1000
+  2010-01-01:
+    value: 1500
+    reference: http://law.reference.org/universal_income
+  2020-01-01:
+    expected: 1700
 </code></pre>
-<h2 id="parameters-and-time">Parameters and time</h2>
-<p>Coding a parameter means defining a list of values, and for each value the date at which it starts to hold.</p>
-<p>Example: a minimum wage</p>
-<pre><code class="lang-xml">  <span class="hljs-tag">&lt;<span class="hljs-title">NODE</span> <span class="hljs-attribute">code</span>=<span class="hljs-value">&quot;labour&quot;</span> <span class="hljs-attribute">description</span>=<span class="hljs-value">&quot;Labour parameters&quot;</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-title">CODE</span> <span class="hljs-attribute">code</span>=<span class="hljs-value">&quot;minimum_wage&quot;</span> <span class="hljs-attribute">description</span>=<span class="hljs-value">&quot;Minimum wage&quot;</span> <span class="hljs-attribute">format</span>=<span class="hljs-value">&quot;integer&quot;</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">&quot;monetary&quot;</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">VALUE</span> <span class="hljs-attribute">deb</span>=<span class="hljs-value">&quot;2014-01-01&quot;</span> <span class="hljs-attribute">valeur</span>=<span class="hljs-value">&quot;1084&quot;</span> /&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">VALUE</span> <span class="hljs-attribute">deb</span>=<span class="hljs-value">&quot;2013-01-01&quot;</span> <span class="hljs-attribute">valeur</span>=<span class="hljs-value">&quot;1016&quot;</span> /&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">VALUE</span> <span class="hljs-attribute">deb</span>=<span class="hljs-value">&quot;2012-01-01&quot;</span> <span class="hljs-attribute">valeur</span>=<span class="hljs-value">&quot;960&quot;</span> /&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">VALUE</span> <span class="hljs-attribute">deb</span>=<span class="hljs-value">&quot;2010-01-01&quot;</span> <span class="hljs-attribute">valeur</span>=<span class="hljs-value">&quot;878&quot;</span> /&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-title">CODE</span>&gt;</span>
+<p>In this example, the parameter <code>universal_income.amount</code> is:</p>
+<ul>
+<li>undefined before 1993;</li>
+<li>equal to 1000 from 1993 to 2010;</li>
+<li>equal to 1500 in 2010</li>
+<li>expected to be raised to 1700 &quot;local currency&quot; in 2020.</li>
+</ul>
+<p>The ordering of the dates has no effect. It is recommended to add legislative references for every value?</p>
+<ol>
+<li>Use the parameter in a variable</li>
+</ol>
+<p>See <a href="10_basic_example.html#example-with-legislation-parameters">this example of a variable using legislation parameters</a>.</p>
+<h3 id="naming-conventions-and-reserved-words">Naming conventions and reserved words</h3>
+<p>Names should begin with a lowercase letter and should contain only lowercase letters and the underscore (<code>_</code>).</p>
+<p>The following keywords are reserved and should not be used as names : <code>description</code>, <code>reference</code>, <code>values</code>, <code>brackets</code>.</p>
+<p>YAML parameter files should not be name <code>index.yaml</code>.</p>
+<h3 id="advanced-uses">Advanced uses</h3>
+<h4 id="use-a-yaml-files-to-define-nodes">Use a YAML files to define nodes</h4>
+<p>A node can be defined with a YAML file instead of a directory. In such a case, the name of the file defines the name of the node. Such a file can define children nodes (which can define grandchildren...).</p>
+<p>Sample <code>parameters/tax_on_salary.yaml</code>:</p>
+<pre><code class="lang-yaml">description: Tax on salaries
+reference: http://fiscaladministration.government/tax_on_salaries.html
+tax_scale:
+  bracket:
     ...
-  <span class="hljs-tag">&lt;/<span class="hljs-title">NODE</span>&gt;</span>
+public_sector:
+  description: Tax on salaries for public sector
+  rate:
+    values:
+     ...
 </code></pre>
-<p>Example: the threshold of the <a href="https://legislation.openfisca.fr/parameters/impot_revenu.decote.seuil" target="_blank"><code>decote</code></a></p>
-<h3 id="the-placeholder-tag">The <code>&lt;PLACEHOLDER&gt;</code> tag</h3>
-<p>When a value is expected to change at a given date but the value is not published yet, a tag <code>&lt;PLACEHOLDER&gt;</code> is used.</p>
-<p>Example: if the minimum wage is expected to change in 2018, the previous example would become</p>
-<pre><code class="lang-xml">  <span class="hljs-tag">&lt;<span class="hljs-title">NODE</span> <span class="hljs-attribute">code</span>=<span class="hljs-value">&quot;labour&quot;</span> <span class="hljs-attribute">description</span>=<span class="hljs-value">&quot;Labour parameters&quot;</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-title">CODE</span> <span class="hljs-attribute">code</span>=<span class="hljs-value">&quot;minimum_wage&quot;</span> <span class="hljs-attribute">description</span>=<span class="hljs-value">&quot;Minimum wage&quot;</span> <span class="hljs-attribute">format</span>=<span class="hljs-value">&quot;integer&quot;</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">&quot;monetary&quot;</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">PLACEHOLDER</span> <span class="hljs-attribute">deb</span>=<span class="hljs-value">&quot;2018-01-01&quot;</span> /&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">VALUE</span> <span class="hljs-attribute">deb</span>=<span class="hljs-value">&quot;2014-01-01&quot;</span> <span class="hljs-attribute">valeur</span>=<span class="hljs-value">&quot;1084&quot;</span> /&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">VALUE</span> <span class="hljs-attribute">deb</span>=<span class="hljs-value">&quot;2013-01-01&quot;</span> <span class="hljs-attribute">valeur</span>=<span class="hljs-value">&quot;1016&quot;</span> /&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">VALUE</span> <span class="hljs-attribute">deb</span>=<span class="hljs-value">&quot;2012-01-01&quot;</span> <span class="hljs-attribute">valeur</span>=<span class="hljs-value">&quot;960&quot;</span> /&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">VALUE</span> <span class="hljs-attribute">deb</span>=<span class="hljs-value">&quot;2010-01-01&quot;</span> <span class="hljs-attribute">valeur</span>=<span class="hljs-value">&quot;878&quot;</span> /&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-title">CODE</span>&gt;</span>
-    ...
-  <span class="hljs-tag">&lt;/<span class="hljs-title">NODE</span>&gt;</span>
+<h4 id="create-scales">Create Scales</h4>
+<p>Scales are constituted of brackets. Brackets are defined by amounts, bases, rates, average rates and thresholds.</p>
+<p>Sample <code>parameters/tax_on_salary/tax_scale.yaml</code>:</p>
+<pre><code class="lang-yaml">description: Scale for tax on salaries
+brackets:
+- rate:
+    1950-01-01:
+      value: 0.0
+    2010-01-01:
+      value: 0.02
+  threshold:
+    1950-01-01:
+      value: 0.0
+- rate:
+    1950-01-01:
+      value: 0.2
+  threshold:
+    1950-01-01:
+      value: 2000
 </code></pre>
-<p>The script <a href="https://github.com/openfisca/openfisca-core/tree/master/openfisca_core/scripts/find_placeholders.py" target="_blank"><code>find_placeholders.py</code></a> finds all placeholders in a legislation. It can be used periodically to alert on parameters about to change.</p>
-<h3 id="the-end-tag">The <code>&lt;END&gt;</code> tag</h3>
-<p>When a parameter is removed from the legislation, a tag <code>&lt;END&gt;</code> is used.</p>
-<p>Example: if the minimum wage is removed from legislation in 2017, the previous example would become</p>
-<pre><code class="lang-xml">  <span class="hljs-tag">&lt;<span class="hljs-title">NODE</span> <span class="hljs-attribute">code</span>=<span class="hljs-value">&quot;labour&quot;</span> <span class="hljs-attribute">description</span>=<span class="hljs-value">&quot;Labour parameters&quot;</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-title">CODE</span> <span class="hljs-attribute">code</span>=<span class="hljs-value">&quot;minimum_wage&quot;</span> <span class="hljs-attribute">description</span>=<span class="hljs-value">&quot;Minimum wage&quot;</span> <span class="hljs-attribute">format</span>=<span class="hljs-value">&quot;integer&quot;</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">&quot;monetary&quot;</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">END</span> <span class="hljs-attribute">deb</span>=<span class="hljs-value">&quot;2017-01-01&quot;</span> /&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">VALUE</span> <span class="hljs-attribute">deb</span>=<span class="hljs-value">&quot;2014-01-01&quot;</span> <span class="hljs-attribute">valeur</span>=<span class="hljs-value">&quot;1084&quot;</span> /&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">VALUE</span> <span class="hljs-attribute">deb</span>=<span class="hljs-value">&quot;2013-01-01&quot;</span> <span class="hljs-attribute">valeur</span>=<span class="hljs-value">&quot;1016&quot;</span> /&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">VALUE</span> <span class="hljs-attribute">deb</span>=<span class="hljs-value">&quot;2012-01-01&quot;</span> <span class="hljs-attribute">valeur</span>=<span class="hljs-value">&quot;960&quot;</span> /&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">VALUE</span> <span class="hljs-attribute">deb</span>=<span class="hljs-value">&quot;2010-01-01&quot;</span> <span class="hljs-attribute">valeur</span>=<span class="hljs-value">&quot;878&quot;</span> /&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-title">CODE</span>&gt;</span>
-    ...
-  <span class="hljs-tag">&lt;/<span class="hljs-title">NODE</span>&gt;</span>
-</code></pre>
-<h2 id="usage-in-formulas">Usage in formulas</h2>
-<p>See <a href="10_basic_example.html#example-with-legislation-parameters">this example</a>.</p>
-<h2 id="importing-from-ipp-tables">Importing from IPP tables</h2>
+<p>Example: <a href="https://legislation.openfisca.fr/parameters/impot_revenu.bareme" target="_blank">the french tax scale on salaries</a></p>
+<h4 id="import-parameters-from-ipp-tables">Import parameters from IPP tables</h4>
 <blockquote>
 <p>This section applies only to OpenFisca-France.</p>
 </blockquote>
 <p>The <a href="http://www.ipp.eu/" target="_blank"><abbr title="Institut des politiques publiques">IPP</abbr></a> is a French centre in economics which produces tax and benefit tables in the <code>XLSX</code> format, with parameters history.</p>
-<p>The OpenFisca team works on importing those data into the XML parameter files of OpenFisca-France.</p>
+<p>The OpenFisca team works on importing those data into the YAML parameter files of OpenFisca-France.</p>
 <p>See <a href="https://github.com/openfisca/openfisca-france/tree/master/openfisca_france/scripts/parameters/baremes_ipp" target="_blank">this README</a> for more information.</p>
 
                     

@@ -53,7 +53,7 @@
         data-chapter-title="Extensions"
         data-filepath="contribute/extensions.md"
         data-basepath=".."
-        data-revision="Wed Aug 30 2017 19:57:26 GMT+0000 (UTC)"
+        data-revision="Wed Aug 30 2017 20:04:08 GMT+0000 (UTC)"
         data-innerlanguage="">
     
 
@@ -814,14 +814,15 @@
 <p>The architecture of an extension folder is the following:</p>
 <pre><code class="lang-sh">{extension_name}/ <span class="hljs-comment"># The folder name is by convention the name of the extension.</span>
     {extension_name}/__init__.py <span class="hljs-comment"># Empty file.</span>
-    {extension_name}/parameters.xml <span class="hljs-comment"># Optional parameters file.</span>
     {extension_name}/{some_formula}.py <span class="hljs-comment"># File containing formulas</span>
     {extension_name}/{other_formula}.py
-    {extension_name}/{some_formula}.yaml <span class="hljs-comment"># Optional test files</span>
-    {extension_name}/{other_formula}.yaml
+    {extension_name}/parameters <span class="hljs-comment"># Optional parameters directory.</span>
+    {extension_name}/parameters/{new_tax}
+    {extension_name}/parameters/{new_tax}/{rate}.yaml
+    {extension_name}/tests/{some_formula}.yaml <span class="hljs-comment"># Optional test files</span>
+    {extension_name}/tests/{other_formula}.yaml
 </code></pre>
 <p>All python files located directly in <code>{extension_name}/</code> are imported in the tax and benefit system.</p>
-<p>Subdirectories are ignored, as well as any other XML file than <code>parameters.xml</code>.</p>
 <p>The syntax of the formulas within extension python files is the same than in the general country package formulas (e.g. <code>from openfisca_france.model.base import *</code>).</p>
 <p>Variables inside an extension should not have the same name than any existing formula, nor than any formula in another extension being used.</p>
 

@@ -53,7 +53,7 @@
         data-chapter-title="Legislation evolutions"
         data-filepath="coding-the-legislation/40_legislation_evolutions.md"
         data-basepath=".."
-        data-revision="Wed Aug 30 2017 19:57:26 GMT+0000 (UTC)"
+        data-revision="Wed Aug 30 2017 20:04:08 GMT+0000 (UTC)"
         data-innerlanguage="">
     
 
@@ -813,32 +813,39 @@
 <p>In that case, add the new parameter values and their start dates in the appropriate parameter files.</p>
 <h3 id="how-to-update-a-parameter">How to update a parameter</h3>
 <h4 id="open-the-file-where-the-parameter-is-described">Open the file where the parameter is described</h4>
-<pre><code class="lang-xml"># in parameters/taxes.xml
-<span class="hljs-tag">&lt;<span class="hljs-title">NODE</span> <span class="hljs-attribute">code</span>=<span class="hljs-value">&quot;taxes&quot;</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-title">NODE</span> <span class="hljs-attribute">code</span>=<span class="hljs-value">&quot;salary&quot;</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">CODE</span> <span class="hljs-attribute">code</span>=<span class="hljs-value">&quot;rate&quot;</span> <span class="hljs-attribute">description</span>=<span class="hljs-value">&quot;Rate for the flat tax on salaries&quot;</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">VALUE</span> <span class="hljs-attribute">deb</span>=<span class="hljs-value">&quot;2016-01-01&quot;</span> <span class="hljs-attribute">valeur</span>=<span class="hljs-value">&quot;0.25&quot;</span> <span class="hljs-attribute">reference</span>=<span class="hljs-value">&quot;https://www.legislation-source.com/2016&quot;</span>/&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">VALUE</span> <span class="hljs-attribute">deb</span>=<span class="hljs-value">&quot;2015-01-01&quot;</span> <span class="hljs-attribute">valeur</span>=<span class="hljs-value">&quot;0.20&quot;</span> <span class="hljs-attribute">reference</span>=<span class="hljs-value">&quot;https://www.legislation-source.com/2015&quot;</span>/&gt;</span>
-      <span class="hljs-tag">&lt;/<span class="hljs-title">CODE</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-title">NODE</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-title">NODE</span>&gt;</span>
+<pre><code class="lang-yaml">taxes:
+  salary:
+    rate:
+      description: Rate for the flat tax on salaries
+      values:
+        2016-01-01:
+          value: 0.25
+          reference: https://www.legislation-source.com/2016
+        2015-01-01:
+          value: 0.20
+          reference: https://www.legislation-source.com/2015
 </code></pre>
 <h4 id="add-a-new-value-to-this-parameter">Add a new value to this parameter</h4>
-<pre><code class="lang-xml"><span class="hljs-tag">&lt;<span class="hljs-title">NODE</span> <span class="hljs-attribute">code</span>=<span class="hljs-value">&quot;taxes&quot;</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-title">NODE</span> <span class="hljs-attribute">code</span>=<span class="hljs-value">&quot;salary&quot;</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">CODE</span> <span class="hljs-attribute">code</span>=<span class="hljs-value">&quot;rate&quot;</span> <span class="hljs-attribute">description</span>=<span class="hljs-value">&quot;Rate for the flat tax on salaries&quot;</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">VALUE</span> <span class="hljs-attribute">deb</span>=<span class="hljs-value">&quot;2017-01-01&quot;</span> <span class="hljs-attribute">valeur</span>=<span class="hljs-value">&quot;0.30&quot;</span> <span class="hljs-attribute">reference</span>=<span class="hljs-value">&quot;https://www.legislation-source.com/2017&quot;</span>/&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">VALUE</span> <span class="hljs-attribute">deb</span>=<span class="hljs-value">&quot;2016-01-01&quot;</span> <span class="hljs-attribute">valeur</span>=<span class="hljs-value">&quot;0.25&quot;</span> <span class="hljs-attribute">reference</span>=<span class="hljs-value">&quot;https://www.legislation-source.com/2016&quot;</span>/&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">VALUE</span> <span class="hljs-attribute">deb</span>=<span class="hljs-value">&quot;2015-01-01&quot;</span> <span class="hljs-attribute">valeur</span>=<span class="hljs-value">&quot;0.20&quot;</span> <span class="hljs-attribute">reference</span>=<span class="hljs-value">&quot;https://www.legislation-source.com/2015&quot;</span>/&gt;</span>
-      <span class="hljs-tag">&lt;/<span class="hljs-title">CODE</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-title">NODE</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-title">NODE</span>&gt;</span>
+<pre><code class="lang-yaml">taxes:
+  salary:
+    rate:
+      description: Rate for the flat tax on salaries
+      values:
+        2017-01-01:
+          value: 0.25
+          reference: https://www.legislation-source.com/2017
+        2016-01-01:
+          value: 0.25
+          reference: https://www.legislation-source.com/2016
+        2015-01-01:
+          value: 0.20
+          reference: https://www.legislation-source.com/2015
 </code></pre>
-<p>After this change <code>legislation(period).path.to.taxes_parameter</code> will return the corresponding values:</p>
+<p>After this change <code>legislation(period).taxes.salary.rate</code> will return the corresponding values:</p>
 <ul>
-<li><code>legislation(2015-04).path.to.taxes_parameter</code> will return <code>0.2</code></li>
-<li><code>legislation(2017-01).path.to.taxes_parameter</code> will return <code>0.3</code></li>
-<li><code>legislation(2022-01).path.to.taxes_parameter</code> will return <code>0.3</code></li>
+<li><code>legislation(&apos;2015-04&apos;).taxes.salary.rate</code> will return <code>0.2</code></li>
+<li><code>legislation(&apos;2017-01&apos;).taxes.salary.rate</code> will return <code>0.3</code></li>
+<li><code>legislation(&apos;2022-01&apos;).taxes.salary.rate</code> will return <code>0.3</code></li>
 </ul>
 <p><a href="legislation_parameters.html#parameters-and-time">Read more about how to code parameters</a>.</p>
 <h2 id="formula-evolution">Formula evolution</h2>
@@ -851,15 +858,15 @@
     label = <span class="hljs-string">u&quot;Individualized and monthly paid tax on salaries&quot;</span>
     definition_period = MONTH
 
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">formula_2017</span><span class="hljs-params">(self, simulation, period)</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">formula_2017</span><span class="hljs-params">(person, period, parameters)</span>:</span>
         salary = person(<span class="hljs-string">&apos;salary&apos;</span>, period)
         salary_above_1000 = min_(salary - <span class="hljs-number">1000</span>, <span class="hljs-number">0</span>)
-        <span class="hljs-keyword">return</span> salary_above_1000 * legislation(period).taxes.salary.rate
+        <span class="hljs-keyword">return</span> salary_above_1000 * parameters(period).taxes.salary.rate
 
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">formula</span><span class="hljs-params">(self, simulation, period)</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">formula</span><span class="hljs-params">(person, period, parameters)</span>:</span>
         salary = person(<span class="hljs-string">&apos;salary&apos;</span>, period)
 
-        <span class="hljs-keyword">return</span> salary * legislation(period).taxes.salary.rate
+        <span class="hljs-keyword">return</span> salary * parameters(period).taxes.salary.rate
 </code></pre>
 <p>If the <code>flat_tax_on_salary</code> is calculated for a person <strong>before</strong> the 31st of Dec. 2016 (included), <code>formula</code> is used. If it is called <strong>after</strong> the 1st of Jan 2017 (included), <code>formula_2017</code> is used.</p>
 <p>Formula naming rules:</p>
@@ -893,15 +900,15 @@
     label = <span class="hljs-string">u&quot;Individualized and monthly paid tax on salaries&quot;</span>
     definition_period = MONTH
 
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">formula_2017</span><span class="hljs-params">(self, simulation, period)</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">formula_2017</span><span class="hljs-params">(person, period, parameters)</span>:</span>
         salary = person(<span class="hljs-string">&apos;salary&apos;</span>, period)
         salary_above_1000 = min_(salary - <span class="hljs-number">1000</span>, <span class="hljs-number">0</span>)
-        <span class="hljs-keyword">return</span> salary_above_1000 * legislation(period).taxes.salary.rate
+        <span class="hljs-keyword">return</span> salary_above_1000 * parameters(period).taxes.salary.rate
 
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">formula_2005_06</span><span class="hljs-params">(self, simulation, period)</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">formula_2005_06</span><span class="hljs-params">(person, period, parameters)</span>:</span>
         salary = person(<span class="hljs-string">&apos;salary&apos;</span>, period)
 
-        <span class="hljs-keyword">return</span> salary * legislation(period).taxes.salary.rate
+        <span class="hljs-keyword">return</span> salary * parameters(period).taxes.salary.rate
 </code></pre>
 <p>Only a few characters changed in comparison with the last example: the suffix <code>_2005_06</code> has been added to the second formula name.</p>
 <p>Note that if <code>flat_tax_on_salary</code> is calculated <strong>before</strong> <code>2005-05-31</code> (included), <em>none</em> of the two formulas is used, as they are <em>both inactive</em> at this time. Instead, <strong>the variable <a href="../variables.html#default-values">default value</a> is returned</strong>.</p>
