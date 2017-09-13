@@ -97,5 +97,15 @@ To build it, [install Hugo](https://gohugo.io/getting-started/installing/), and 
 git clone https://github.com/openfisca/openfisca.org
 cd openfisca.org
 git submodule update --init --recursive
-hugo server
+hugo
+```
+
+The website will be built in the `public` directory.
+
+## Serving the app locally
+
+To run hugo in developpement mode, run:
+
+```
+hugo serve
 ```

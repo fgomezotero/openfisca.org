@@ -1,5 +1,6 @@
 ---
 title: "Turn law into software"
+layout: home
 usecases:
   mes_aides:
     title: Calculate citizens' rights

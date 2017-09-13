@@ -1,5 +1,6 @@
 ---
 title: "Transformer le code législatif en code logiciel"
+layout: home
 usecases:
   mes_aides:
     title: Calculer les droits des citoyens
