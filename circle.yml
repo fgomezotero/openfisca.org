@@ -19,7 +19,8 @@ dependencies:
 
 test:
   pre:
-    - hugo serve:
+    - npm run build
+    - cd public && python -m SimpleHTTPServer $PORT:
         background: true
         parallel: true
     # start Sauce Connect
@@ -48,6 +49,6 @@ deployment:
   master:
     branch: master
     commands:
-      - hugo
+      - npm run build
       - npm run publish
       - ./publish-doc.sh
