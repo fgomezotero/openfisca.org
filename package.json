@@ -18,7 +18,8 @@
   },
   "homepage": "https://github.com/openfisca/openfisca.org#readme",
   "scripts": {
+    "build": "hugo && cp index.html public/",
     "test": "./node_modules/.bin/eslint publish.js && watai tests/integration",
-    "publish": "node publish.js" 
+    "publish": "node publish.js"
   }
 }
