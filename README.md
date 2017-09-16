@@ -91,29 +91,29 @@ For each type in the [user taxonomy](https://github.com/openfisca/openfisca-core
 
 This website is built using [Hugo](https://gohugo.io), a static website editor.
 
-To build it, [install Hugo](https://gohugo.io/getting-started/installing/), and then:
+First install [Hugo](https://gohugo.io/getting-started/installing/), and then:
 
 ```
 git clone https://github.com/openfisca/openfisca.org
 cd openfisca.org
 git submodule update --init --recursive
-hugo server
+npm install
 ```
 
-And, to regenerate the site, use the following instructions:
+
+## Build
+
+To build the web site, use the following instructions:
 
 ```
 cd openfisca.org
-rm -rf public/
-hugo
+npm run build
 ```
 
 The website will be built in the `public` directory.
  
 ## Serving the app locally
- 
-To run hugo in developpement mode, run:
- 
+  
 ```
-hugo serve
+npm run dev
 ```

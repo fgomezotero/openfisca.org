@@ -6,6 +6,7 @@
     "eslint": "^4.4.1",
     "eslint-config-google": "^0.9.1",
     "gh-pages": "^1.0.0",
+    "live-server": "^1.2.0",
     "watai": "^0.7.0"
   },
   "repository": {
@@ -18,7 +19,8 @@
   },
   "homepage": "https://github.com/openfisca/openfisca.org#readme",
   "scripts": {
-    "build": "hugo && cp index.html public/",
+    "build": "rm -rf public && hugo && cp index.html public/",
+    "dev": "live-server public --port=1313",
     "test": "./node_modules/.bin/eslint publish.js && watai tests/integration",
     "publish": "node publish.js"
   }

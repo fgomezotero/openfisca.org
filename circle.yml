@@ -20,7 +20,7 @@ dependencies:
 test:
   pre:
     - npm run build
-    - cd public && python -m SimpleHTTPServer $PORT:
+    - npm run dev:
         background: true
         parallel: true
     # start Sauce Connect
