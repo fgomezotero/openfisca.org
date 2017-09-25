@@ -53,7 +53,7 @@
         data-chapter-title="Parameters"
         data-filepath="coding-the-legislation/legislation_parameters.md"
         data-basepath=".."
-        data-revision="Wed Aug 30 2017 20:04:08 GMT+0000 (UTC)"
+        data-revision="Mon Sep 25 2017 17:38:10 GMT+0000 (UTC)"
         data-innerlanguage="">
     
 
@@ -930,6 +930,109 @@ brackets:
 <p>The <a href="http://www.ipp.eu/" target="_blank"><abbr title="Institut des politiques publiques">IPP</abbr></a> is a French centre in economics which produces tax and benefit tables in the <code>XLSX</code> format, with parameters history.</p>
 <p>The OpenFisca team works on importing those data into the YAML parameter files of OpenFisca-France.</p>
 <p>See <a href="https://github.com/openfisca/openfisca-france/tree/master/openfisca_france/scripts/parameters/baremes_ipp" target="_blank">this README</a> for more information.</p>
+<h2 id="computing-a-parameter-that-depends-on-a-variable-fancy-indexing">Computing a parameter that depends on a variable (fancy indexing)</h2>
+<p>Sometimes, the value of a parameter depends on a variable (e.g. a housing benefit that depends on the zone the house is built on).</p>
+<p>To be more specific, let&apos;s assume that:</p>
+<ul>
+<li>Households who rent their accomodation can get a <code>housing_benefit</code></li>
+<li>The amount of this benefit depends on which <code>zone</code> the household lives in. The <code>zone</code> can take only three values: <code>zone_1</code>, <code>zone_2</code> or <code>zone_3</code>.</li>
+<li>The amount also depends on the composition of the household.</li>
+</ul>
+<p>The parameters of this benefit can be defined in a <code>housing_benefit.yaml</code> file:</p>
+<pre><code class="lang-YAML">zone_1:
+  single:
+    description: &quot;Amount of housing benefit for a single person, in zone 1&quot;
+    values:
+      2015-01-01:
+        value: 150
+  couple:
+    description: &quot;Amount of housing benefit for a couple, in zone 1&quot;
+    values:
+      2015-01-01:
+        value: 250
+  single:
+    description: &quot;Amount of housing benefit per child, in zone 1&quot;
+    values:
+      2015-01-01:
+        value: 80
+zone_2:
+  single:
+    description: &quot;Amount of housing benefit for a single person, in zone 2&quot;
+    values:
+      2015-01-01:
+        value: 120
+  couple:
+    description: &quot;Amount of housing benefit for a couple, in zone 2&quot;
+    values:
+      2015-01-01:
+        value: 220
+  per_child:
+    description: &quot;Amount of housing benefit per child, in zone 2&quot;
+    values:
+      2015-01-01:
+        value: 60
+zone_3:
+  single:
+    description: &quot;Amount of housing benefit for a single person, in zone 3&quot;
+    values:
+      2015-01-01:
+        value: 100
+  couple:
+    description: &quot;Amount of housing benefit for a couple, in zone 3&quot;
+    values:
+      2015-01-01:
+        value: 180
+  per_child:
+    description: &quot;Amount of housing benefit per child, in zone 3&quot;
+    values:
+      2015-01-01:
+        value: 50
+</code></pre>
+<p>Then the formula calculting <code>housing_benefit</code> can be implemented with:</p>
+<pre><code class="lang-py"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">formula</span><span class="hljs-params">(household, period, parameters)</span>:</span>
+  is_couple = household(<span class="hljs-string">&apos;couple&apos;</span>, period)
+  nb_children = household(<span class="hljs-string">&apos;nb_children&apos;</span>, period)
+  zone = household(<span class="hljs-string">&apos;zone&apos;</span>, period)
+
+  P = parameters(period).housing_benefit[zone]
+
+  <span class="hljs-keyword">return</span> where(is_couple, P.couple, P.single) + nb_children * P.per_children
+</code></pre>
+<p><code>parameters(period).housing_benefit[zone]</code> return the parameters for the zone corresponding to the household.</p>
+<p>If there are many households in your simulation, this parameter will be <strong>vectorial</strong> : it may have a different value for each household of your entity.</p>
+<p>To be able to use this notation, all the children node of the parameter node <code>housing_benefit</code> must be <strong>homogenous</strong>. In the previous example, <code>housing_benefit.zone_1</code>, <code>housing_benefit.zone_2</code>, <code>housing_benefit.zone_3</code> are homogenous, as they have the same subnodes.</p>
+<p>However, let&apos;s imagine that <code>housing_benefit.yaml</code> had another subnode named <code>coeff_furnished</code>, which described a coefficient to apply to the benefit is the accomodation is rented furnished:</p>
+<p><code>housing_benefit.yaml</code> content:</p>
+<pre><code>coeff_furnished:
+  description: &quot;Coefficient to apply if the accomodation is rented furnished&quot;
+    values:
+      2015-01-01:
+        value: 0.75
+zone_1:
+  single:
+    description: &quot;Amount of housing benefit for a single person, in zone 1&quot;
+    values:
+      2015-01-01:
+        value: 150
+(...)
+</code></pre><p>In this case, <code>parameters(period).housing_benefit[zone]</code> would raise en error, whatever <code>zone</code> contains, as <strong>the homogeneity condition is not respected</strong>: <code>housing_benefit.zone_1</code> is a node, while <code>housing_benefit.coeff_furnished</code> is a parameter.</p>
+<p>To solve this issue, the good practice would be to create an intermediate node <code>amount_by_node</code>:</p>
+<p><code>housing_benefit.yaml</code> content:</p>
+<pre><code>coeff_furnished:
+  description: &quot;Coefficient to apply if the accomodation is rented furnished&quot;
+    values:
+      2015-01-01:
+        value: 0.75
+
+amount_by_zone:
+  zone_1:
+    single:
+      description: &quot;Amount of housing benefit for a single person, in zone 1&quot;
+      values:
+        2015-01-01:
+          value: 150
+  (...)
+</code></pre><p>And then to get <code>parameters(period).housing_benefit.amount_by_zone[zone]</code>  </p>
 
                     
                     </section>
