@@ -37,7 +37,7 @@
         
     
     
-    <link rel="next" href="../openfisca-web-api/reforms.html" />
+    <link rel="next" href="../openfisca-web-api/deprecated-api.html" />
     
     
     <link rel="prev" href="../openfisca-web-api/endpoints.html" />
@@ -49,11 +49,11 @@
         
         
     <div class="book"
-        data-level="3.3"
+        data-level="3.2"
         data-chapter-title="Input and output data"
         data-filepath="openfisca-web-api/input-output-data.md"
         data-basepath=".."
-        data-revision="Wed Sep 27 2017 23:11:49 GMT+0000 (UTC)"
+        data-revision="Mon Oct 09 2017 19:08:17 GMT+0000 (UTC)"
         data-innerlanguage="">
     
 
@@ -447,44 +447,29 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="3.1" data-path="openfisca-web-api/preview-api.html">
-            
-                
-                    <a href="../openfisca-web-api/preview-api.html">
-                
-                        <i class="fa fa-check"></i>
-                        
-                            <b>3.1.</b>
-                        
-                        Preview API
-                    </a>
-            
-            
-        </li>
-    
-        <li class="chapter " data-level="3.2" data-path="openfisca-web-api/endpoints.html">
+        <li class="chapter " data-level="3.1" data-path="openfisca-web-api/endpoints.html">
             
                 
                     <a href="../openfisca-web-api/endpoints.html">
                 
                         <i class="fa fa-check"></i>
                         
-                            <b>3.2.</b>
+                            <b>3.1.</b>
                         
-                        Official API
+                        Endpoints
                     </a>
             
             
         </li>
     
-        <li class="chapter active" data-level="3.3" data-path="openfisca-web-api/input-output-data.html">
+        <li class="chapter active" data-level="3.2" data-path="openfisca-web-api/input-output-data.html">
             
                 
                     <a href="../openfisca-web-api/input-output-data.html">
                 
                         <i class="fa fa-check"></i>
                         
-                            <b>3.3.</b>
+                            <b>3.2.</b>
                         
                         Input and output data
                     </a>
@@ -492,16 +477,16 @@
             
         </li>
     
-        <li class="chapter " data-level="3.4" data-path="openfisca-web-api/reforms.html">
+        <li class="chapter " data-level="3.3" data-path="openfisca-web-api/deprecated-api.html">
             
                 
-                    <a href="../openfisca-web-api/reforms.html">
+                    <a href="../openfisca-web-api/deprecated-api.html">
                 
                         <i class="fa fa-check"></i>
                         
-                            <b>3.4.</b>
+                            <b>3.3.</b>
                         
-                        Reforms
+                        Deprecated API
                     </a>
             
             
@@ -818,98 +803,285 @@
                 
                     <section class="normal" id="section-">
                     
-                        <h1 id="input-and-output-data">Input and output data</h1>
-<h2 id="values-by-period">Values by period</h2>
-<p>In OpenFisca, the value of a variable is always defined for a specific period.</p>
-<p>This is encoded in JSON using the following format:</p>
-<pre><code class="lang-JSON">{<span class="hljs-string">&quot;salary&quot;</span>: {<span class="hljs-string">&quot;2015-01&quot;</span>: <span class="hljs-number">2000</span>}}
-</code></pre>
-<p>This format allows you to encode an evolution of the variable over time:</p>
-<pre><code class="lang-JSON">{
-  <span class="hljs-string">&quot;salary&quot;</span>: {
-    <span class="hljs-string">&quot;2015-01&quot;</span>: <span class="hljs-number">2000</span>,
-    <span class="hljs-string">&quot;2015-02&quot;</span>: <span class="hljs-number">2000</span>,
-    <span class="hljs-string">&quot;2015-03&quot;</span>: <span class="hljs-number">2100</span>,
-    <span class="hljs-string">&quot;2015-04&quot;</span>: <span class="hljs-number">2100</span>,
+                        <h1 id="using-the-calculate-endpoint">Using the /calculate endpoint</h1>
+<blockquote>
+<p>All the examples provided here are from the <a href="https://github.com/openfisca/country-template" target="_blank">country package template</a>.</p>
+</blockquote>
+<p>In order to run a computation on the Web API, you will need to send information to the API concerning:</p>
+<ul>
+<li>The situation, meaning describe the entities (e.g. individuals, households) that you want to base your calculations on.</li>
+<li>The variable you need to compute.</li>
+</ul>
+<h2 id="describing-the-situation">Describing the situation</h2>
+<h3 id="describing-entities">Describing entities</h3>
+<p>The most important rule in describing a situation in OpenFisca is:</p>
+<p>Every person has to belong to one of each group entity (e.g. household).
+Every person in a group entity needs a role (e.g. parent)</p>
+<blockquote>
+<p>For example, if you wish to run a calculation on 2 households:</p>
+<ul>
+<li>household_1 is composed of two adults;</li>
+<li>household_2 is composed of one adult and one child.</li>
+</ul>
+</blockquote>
+<pre><code class="lang-json">{
+  <span class="hljs-string">&quot;persons&quot;</span>: { 
+    <span class="hljs-string">&quot;Ricarda&quot;</span>: {},
+    <span class="hljs-string">&quot;Bob&quot;</span>: {},
+    <span class="hljs-string">&quot;Bill&quot;</span>: {},
+    <span class="hljs-string">&quot;Janet&quot;</span>: {}
+    },
+  <span class="hljs-string">&quot;households&quot;</span>: {
+    <span class="hljs-string">&quot;household_1&quot;</span>: {
+      <span class="hljs-string">&quot;parents&quot;</span>: [
+        <span class="hljs-string">&quot;Ricarda&quot;</span>, <span class="hljs-string">&quot;Bob&quot;</span>
+      ]
+    },
+    <span class="hljs-string">&quot;household_2&quot;</span>: {
+      <span class="hljs-string">&quot;parents&quot;</span>: [
+        <span class="hljs-string">&quot;Bill&quot;</span>
+      ],
+      <span class="hljs-string">&quot;children&quot;</span>:[
+        <span class="hljs-string">&quot;Janet&quot;</span>
+      ]
+    }
   }
 }
 </code></pre>
-<p>When you define the inputs of a simulation, you should in general define the period for which you are setting values (except for variables which cannot change over time, such as a birth date).</p>
-<p>If no period is given, for example <code>{enfant_a_charge: false}</code>, your input will <strong>only</strong> be set for the global period of the <a href="#scenarios">scenario</a>.</p>
-<p>Example: <code>{salaire_de_base: 5000}</code> is equivalent to <code>{salaire_de_base: {&lt;scenario_period&gt;: 5000}}</code>, <code>&lt;scenario_period&gt;</code> being defined in the <a href="#scenarios">scenario</a>.</p>
-<h2 id="scenarios">Scenarios</h2>
-<p>A JSON scenario is an object structured this way:</p>
-<ul>
-<li><code>axes</code> (a list of objects, default: null): the axes of the scenario, see <a href="#axes">axes</a></li>
-<li><code>input_variables</code> (an object, mutually exclusive with <code>test_case</code>): the input variables, encoded with the <a href="#values-by-period">value by period</a> structure. For instance:<ul>
-<li><code>{&quot;salary&quot;: {&quot;2015-04&quot;: 2000}, age: {&quot;2015-04&quot;: 30}}</code></li>
-</ul>
-</li>
-<li><code>period</code> (see <a href="../periodsinstants.html">periods and instants</a>): the period on which the variables of the decomposition will be computed</li>
-<li><code>test_case</code> (an object, mutually exclusive with <code>input_variables</code>): the test case of the scenario, see <a href="#test-cases">test cases</a></li>
-</ul>
+<h3 id="adding-information-to-entities">Adding information to entities</h3>
+<p>To run a precise calculation, you can provide information on each person and group entity.</p>
+<p>These are the input <a href="../variables.html">variables</a> of your simulation. </p>
+<p>To provide an input variable, insert the value in the json, for the corresponding time period (e.g. &apos;2015-06&apos;) and entity (e.g. &apos;person&apos;, &apos;household&apos;).</p>
+<p>The time period must respect the <a href="../coding-the-legislation/35_periods.html">definition period</a> of the variable, and the entity must be the one the variable is defined for.</p>
 <blockquote>
-<p>Either <code>test_case</code> or <code>input_variables</code> must be provided, not both.</p>
-<p><code>axes</code> can&apos;t be used with <code>input_variables</code>, only <code>test_case</code>.</p>
+<p>For example, if Ricarda has a salary (defined monthly for a Person) of 3500/month until september 2016, and 4000/month after that and if household_2 were tenant and became homeowners in march 2016 (housing_occupancy_status is defined monthly for a household) of the 57 sqm apartment they live in, you would write:</p>
 </blockquote>
-<h2 id="test-cases">Test cases</h2>
-<p>A test case describes persons, entities and their associations.</p>
-<p>Let&apos;s assume that your tax and benefit system defines a <a href="../person,_entities,_role.html#person">person entity</a> named <code>persons</code>, and a <a href="../person,_entities,_role.html#group-entities">group entity]</a> named <code>households</code>.</p>
-<p>Let&apos;s also assume that within a <code>household</code>, you have <code>parents</code> and <code>children</code>.</p>
-<p>A JSON test case is an object structured this way:</p>
-<ul>
-<li><code>persons</code> (list of objects): defines persons with their input variables, structured this way:<ul>
-<li><code>id</code> (string): the ID of the person</li>
-<li><code>&lt;variable name (string)&gt;</code> (the <a href="#values-by-period">value by period</a>): an input variable</li>
-</ul>
-</li>
-<li><code>households</code> (list of objects): the definition of the entity, structured this way:<ul>
-<li><code>id</code> (string): the ID of the entity</li>
-<li><code>parents</code> (list of strings): a list of persons IDs referencing the ones defined under the persons key</li>
-<li><code>children</code> (list of strings): a list of persons IDs referencing the ones defined under the persons key</li>
-<li><code>&lt;variable name (string)&gt;</code> (the <a href="#values-by-period">value by period</a>): an input variable</li>
-</ul>
-</li>
-</ul>
-<p>Entities and roles can be fetched dynamically with the <a href="#entities">entities</a> API endpoint.</p>
-<p>Example using OpenFisca-France entities and roles:</p>
 <pre><code class="lang-json">{
-  <span class="hljs-string">&quot;individus&quot;</span>: [
-    {
-      <span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-string">&quot;Personne 1&quot;</span>,
-      <span class="hljs-string">&quot;salaire_de_base&quot;</span>: <span class="hljs-number">50000</span>
+  <span class="hljs-string">&quot;persons&quot;</span>: { 
+    <span class="hljs-string">&quot;Ricarda&quot;</span>: {
+      <span class="hljs-string">&quot;salary&quot;</span>: {
+        <span class="hljs-string">&quot;2016-01&quot;</span>: <span class="hljs-number">3500</span>,
+        <span class="hljs-string">&quot;2016-02&quot;</span>: <span class="hljs-number">3500</span>,
+        <span class="hljs-string">&quot;2016-03&quot;</span>: <span class="hljs-number">3500</span>,
+        <span class="hljs-string">&quot;2016-04&quot;</span>: <span class="hljs-number">3500</span>,
+        <span class="hljs-string">&quot;2016-05&quot;</span>: <span class="hljs-number">3500</span>,
+        <span class="hljs-string">&quot;2016-06&quot;</span>: <span class="hljs-number">3500</span>,
+        <span class="hljs-string">&quot;2016-07&quot;</span>: <span class="hljs-number">3500</span>,
+        <span class="hljs-string">&quot;2016-08&quot;</span>: <span class="hljs-number">3500</span>,
+        <span class="hljs-string">&quot;2016-09&quot;</span>: <span class="hljs-number">4000</span>,
+        <span class="hljs-string">&quot;2016-10&quot;</span>: <span class="hljs-number">4000</span>,
+        <span class="hljs-string">&quot;2016-11&quot;</span>: <span class="hljs-number">4000</span>,
+        <span class="hljs-string">&quot;2016-12&quot;</span>: <span class="hljs-number">4000</span>
+      }
+    },
+    <span class="hljs-string">&quot;Bob&quot;</span>: {},
+    <span class="hljs-string">&quot;Bill&quot;</span>: {},
+    <span class="hljs-string">&quot;Janet&quot;</span>: {}
+  },
+  <span class="hljs-string">&quot;households&quot;</span>: {
+    <span class="hljs-string">&quot;household_1&quot;</span>: {
+      <span class="hljs-string">&quot;parents&quot;</span>: [
+        <span class="hljs-string">&quot;Ricarda&quot;</span>, <span class="hljs-string">&quot;Bob&quot;</span>
+      ]
+    },
+    <span class="hljs-string">&quot;household_2&quot;</span>: {
+      <span class="hljs-string">&quot;parents&quot;</span>: [
+        <span class="hljs-string">&quot;Bill&quot;</span>
+      ],
+      <span class="hljs-string">&quot;children&quot;</span>:[
+        <span class="hljs-string">&quot;Janet&quot;</span>
+      ],
+      <span class="hljs-string">&quot;housing_occupancy_status&quot;</span>: {
+        <span class="hljs-string">&quot;2016-01&quot;</span>: <span class="hljs-string">&quot;Tenant&quot;</span>,
+        <span class="hljs-string">&quot;2016-02&quot;</span>: <span class="hljs-string">&quot;Tenant&quot;</span>,
+        <span class="hljs-string">&quot;2016-03&quot;</span>: <span class="hljs-string">&quot;Owner&quot;</span>,
+        <span class="hljs-string">&quot;2016-04&quot;</span>: <span class="hljs-string">&quot;Owner&quot;</span>,
+        <span class="hljs-string">&quot;2016-05&quot;</span>: <span class="hljs-string">&quot;Owner&quot;</span>,
+        <span class="hljs-string">&quot;2016-06&quot;</span>: <span class="hljs-string">&quot;Owner&quot;</span>,
+        <span class="hljs-string">&quot;2016-07&quot;</span>: <span class="hljs-string">&quot;Owner&quot;</span>,
+        <span class="hljs-string">&quot;2016-08&quot;</span>: <span class="hljs-string">&quot;Owner&quot;</span>,
+        <span class="hljs-string">&quot;2016-09&quot;</span>: <span class="hljs-string">&quot;Owner&quot;</span>,
+        <span class="hljs-string">&quot;2016-10&quot;</span>: <span class="hljs-string">&quot;Owner&quot;</span>,
+        <span class="hljs-string">&quot;2016-11&quot;</span>: <span class="hljs-string">&quot;Owner&quot;</span>,
+        <span class="hljs-string">&quot;2016-12&quot;</span>: <span class="hljs-string">&quot;Owner&quot;</span>
+      },
+      <span class="hljs-string">&quot;accommodation_size&quot;</span>: {
+        <span class="hljs-string">&quot;2016-01&quot;</span>: <span class="hljs-number">57</span>,
+        <span class="hljs-string">&quot;2016-02&quot;</span>: <span class="hljs-number">57</span>,
+        <span class="hljs-string">&quot;2016-03&quot;</span>: <span class="hljs-number">57</span>,
+        <span class="hljs-string">&quot;2016-04&quot;</span>: <span class="hljs-number">57</span>,
+        <span class="hljs-string">&quot;2016-05&quot;</span>: <span class="hljs-number">57</span>,
+        <span class="hljs-string">&quot;2016-06&quot;</span>: <span class="hljs-number">57</span>,
+        <span class="hljs-string">&quot;2016-07&quot;</span>: <span class="hljs-number">57</span>,
+        <span class="hljs-string">&quot;2016-08&quot;</span>: <span class="hljs-number">57</span>,
+        <span class="hljs-string">&quot;2016-09&quot;</span>: <span class="hljs-number">57</span>,
+        <span class="hljs-string">&quot;2016-10&quot;</span>: <span class="hljs-number">57</span>,
+        <span class="hljs-string">&quot;2016-11&quot;</span>: <span class="hljs-number">57</span>,
+        <span class="hljs-string">&quot;2016-12&quot;</span>: <span class="hljs-number">57</span>
+      }
     }
-  ],
-  <span class="hljs-string">&quot;familles&quot;</span>: [
-    {
-      <span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-string">&quot;Famille 1&quot;</span>,
-      <span class="hljs-string">&quot;parents&quot;</span>: [<span class="hljs-string">&quot;Personne 1&quot;</span>]
-    }
-  ],
-  <span class="hljs-string">&quot;foyers_fiscaux&quot;</span>: [
-    {
-      <span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-string">&quot;D&#xE9;claration d&apos;imp&#xF4;t 1&quot;</span>,
-      <span class="hljs-string">&quot;declarants&quot;</span>: [<span class="hljs-string">&quot;Personne 1&quot;</span>]
-    }
-  ],
-  <span class="hljs-string">&quot;menages&quot;</span>: [
-    {
-      <span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-string">&quot;Logement principal 1&quot;</span>,
-      <span class="hljs-string">&quot;personne_de_reference&quot;</span>: <span class="hljs-string">&quot;Personne 1&quot;</span>
-    }
-  ]
+  }
 }
 </code></pre>
-<h2 id="axes">Axes</h2>
-<p>A JSON axis is an object structured this way:</p>
-<ul>
-<li><code>count</code> (integer, &gt;= 1, required): the number of steps to go from min to max</li>
-<li><code>index</code> (integer, &gt;= 0, default: 0): the index of the person on which to apply the variation of the variable</li>
-<li><code>max</code> (integer or float, required): the maximum value of the varying variable</li>
-<li><code>min</code> (integer or float, required): the minimum value of the varying variable</li>
-<li><code>name</code> (string, one of available <a href="https://legislation.openfisca.fr/variables" target="_blank">variable names</a>, required): the name of the varying variable</li>
-<li><code>period</code> (see <a href="../periodsinstants.html">periods and instants</a>)</li>
-</ul>
+<p><strong>Note that due to the default value system in OpenFisca, the variables that have not been defined explicitly are either calculated or take on their <a href="../variables.html#default-values">default value</a>.</strong>  </p>
+<h2 id="computing-a-variable">Computing a variable</h2>
+<p>Once you have described the situation, you can compute all variables in the Country Package.</p>
+<p>To indicate you want a variable computed, insert the variable in the corresponding entity and indicate the time period followed by the term <code>null</code>.</p>
+<blockquote>
+<p>for example, to compute Ricarda&apos;s june income tax (defined monthly for a person) and household_2&apos;s housing tax (defined yearly for a household), you would write:</p>
+</blockquote>
+<pre><code class="lang-json">{
+  <span class="hljs-string">&quot;persons&quot;</span>: { 
+    <span class="hljs-string">&quot;Ricarda&quot;</span>: {
+      <span class="hljs-string">&quot;salary&quot;</span>: {
+        <span class="hljs-string">&quot;2016-01&quot;</span>: <span class="hljs-number">3500</span>,
+        <span class="hljs-string">&quot;2016-02&quot;</span>: <span class="hljs-number">3500</span>,
+        <span class="hljs-string">&quot;2016-03&quot;</span>: <span class="hljs-number">3500</span>,
+        <span class="hljs-string">&quot;2016-04&quot;</span>: <span class="hljs-number">3500</span>,
+        <span class="hljs-string">&quot;2016-05&quot;</span>: <span class="hljs-number">3500</span>,
+        <span class="hljs-string">&quot;2016-06&quot;</span>: <span class="hljs-number">3500</span>,
+        <span class="hljs-string">&quot;2016-07&quot;</span>: <span class="hljs-number">3500</span>,
+        <span class="hljs-string">&quot;2016-08&quot;</span>: <span class="hljs-number">3500</span>,
+        <span class="hljs-string">&quot;2016-09&quot;</span>: <span class="hljs-number">4000</span>,
+        <span class="hljs-string">&quot;2016-10&quot;</span>: <span class="hljs-number">4000</span>,
+        <span class="hljs-string">&quot;2016-11&quot;</span>: <span class="hljs-number">4000</span>,
+        <span class="hljs-string">&quot;2016-12&quot;</span>: <span class="hljs-number">4000</span>
+      },
+      <span class="hljs-string">&quot;income_tax&quot;</span>: {
+        <span class="hljs-string">&quot;2016-06&quot;</span>: <span class="hljs-literal">null</span>
+      }
+    },
+    <span class="hljs-string">&quot;Bob&quot;</span>: {},
+    <span class="hljs-string">&quot;Bill&quot;</span>: {},
+    <span class="hljs-string">&quot;Janet&quot;</span>: {}
+  },
+  <span class="hljs-string">&quot;households&quot;</span>: {
+    <span class="hljs-string">&quot;household_1&quot;</span>: {
+      <span class="hljs-string">&quot;parents&quot;</span>: [
+        <span class="hljs-string">&quot;Ricarda&quot;</span>, <span class="hljs-string">&quot;Bob&quot;</span>
+      ]
+    },
+    <span class="hljs-string">&quot;household_2&quot;</span>: {
+      <span class="hljs-string">&quot;parents&quot;</span>: [
+        <span class="hljs-string">&quot;Bill&quot;</span>
+      ],
+      <span class="hljs-string">&quot;children&quot;</span>:[
+        <span class="hljs-string">&quot;Janet&quot;</span>
+      ],
+      <span class="hljs-string">&quot;housing_occupancy_status&quot;</span>: {
+        <span class="hljs-string">&quot;2016-01&quot;</span>: <span class="hljs-string">&quot;Tenant&quot;</span>,
+        <span class="hljs-string">&quot;2016-02&quot;</span>: <span class="hljs-string">&quot;Tenant&quot;</span>,
+        <span class="hljs-string">&quot;2016-03&quot;</span>: <span class="hljs-string">&quot;Owner&quot;</span>,
+        <span class="hljs-string">&quot;2016-04&quot;</span>: <span class="hljs-string">&quot;Owner&quot;</span>,
+        <span class="hljs-string">&quot;2016-05&quot;</span>: <span class="hljs-string">&quot;Owner&quot;</span>,
+        <span class="hljs-string">&quot;2016-06&quot;</span>: <span class="hljs-string">&quot;Owner&quot;</span>,
+        <span class="hljs-string">&quot;2016-07&quot;</span>: <span class="hljs-string">&quot;Owner&quot;</span>,
+        <span class="hljs-string">&quot;2016-08&quot;</span>: <span class="hljs-string">&quot;Owner&quot;</span>,
+        <span class="hljs-string">&quot;2016-09&quot;</span>: <span class="hljs-string">&quot;Owner&quot;</span>,
+        <span class="hljs-string">&quot;2016-10&quot;</span>: <span class="hljs-string">&quot;Owner&quot;</span>,
+        <span class="hljs-string">&quot;2016-11&quot;</span>: <span class="hljs-string">&quot;Owner&quot;</span>,
+        <span class="hljs-string">&quot;2016-12&quot;</span>: <span class="hljs-string">&quot;Owner&quot;</span>
+      },
+      <span class="hljs-string">&quot;accomodation_size&quot;</span>: {
+        <span class="hljs-string">&quot;2016-01&quot;</span>: <span class="hljs-number">57</span>,
+        <span class="hljs-string">&quot;2016-02&quot;</span>: <span class="hljs-number">57</span>,
+        <span class="hljs-string">&quot;2016-03&quot;</span>: <span class="hljs-number">57</span>,
+        <span class="hljs-string">&quot;2016-04&quot;</span>: <span class="hljs-number">57</span>,
+        <span class="hljs-string">&quot;2016-05&quot;</span>: <span class="hljs-number">57</span>,
+        <span class="hljs-string">&quot;2016-06&quot;</span>: <span class="hljs-number">57</span>,
+        <span class="hljs-string">&quot;2016-07&quot;</span>: <span class="hljs-number">57</span>,
+        <span class="hljs-string">&quot;2016-08&quot;</span>: <span class="hljs-number">57</span>,
+        <span class="hljs-string">&quot;2016-09&quot;</span>: <span class="hljs-number">57</span>,
+        <span class="hljs-string">&quot;2016-10&quot;</span>: <span class="hljs-number">57</span>,
+        <span class="hljs-string">&quot;2016-11&quot;</span>: <span class="hljs-number">57</span>,
+        <span class="hljs-string">&quot;2016-12&quot;</span>: <span class="hljs-number">57</span>
+      },
+      <span class="hljs-string">&quot;housing_tax&quot;</span>: {
+        <span class="hljs-string">&quot;2016&quot;</span>: <span class="hljs-literal">null</span>
+      }
+    }
+  }
+}
+</code></pre>
+<h2 id="understanding-the-result">Understanding the result</h2>
+<p>The API will return an identical JSON file where all the <code>null</code> (the variable that you asked OpenFisca to compute, see above for details) have been replace by the computed value.</p>
+<pre><code class="lang-json">{
+  <span class="hljs-string">&quot;households&quot;</span>: {
+    <span class="hljs-string">&quot;household_1&quot;</span>: {
+      <span class="hljs-string">&quot;parents&quot;</span>: [
+        <span class="hljs-string">&quot;Ricarda&quot;</span>, 
+        <span class="hljs-string">&quot;Bob&quot;</span>
+      ]
+    }, 
+    <span class="hljs-string">&quot;household_2&quot;</span>: {
+      <span class="hljs-string">&quot;accomodation_size&quot;</span>: {
+        <span class="hljs-string">&quot;2016-01&quot;</span>: <span class="hljs-number">57</span>, 
+        <span class="hljs-string">&quot;2016-02&quot;</span>: <span class="hljs-number">57</span>, 
+        <span class="hljs-string">&quot;2016-03&quot;</span>: <span class="hljs-number">57</span>, 
+        <span class="hljs-string">&quot;2016-04&quot;</span>: <span class="hljs-number">57</span>, 
+        <span class="hljs-string">&quot;2016-05&quot;</span>: <span class="hljs-number">57</span>, 
+        <span class="hljs-string">&quot;2016-06&quot;</span>: <span class="hljs-number">57</span>, 
+        <span class="hljs-string">&quot;2016-07&quot;</span>: <span class="hljs-number">57</span>, 
+        <span class="hljs-string">&quot;2016-08&quot;</span>: <span class="hljs-number">57</span>, 
+        <span class="hljs-string">&quot;2016-09&quot;</span>: <span class="hljs-number">57</span>, 
+        <span class="hljs-string">&quot;2016-10&quot;</span>: <span class="hljs-number">57</span>, 
+        <span class="hljs-string">&quot;2016-11&quot;</span>: <span class="hljs-number">57</span>, 
+        <span class="hljs-string">&quot;2016-12&quot;</span>: <span class="hljs-number">57</span>
+      }, 
+      <span class="hljs-string">&quot;children&quot;</span>: [
+        <span class="hljs-string">&quot;Janet&quot;</span>
+      ], 
+      <span class="hljs-string">&quot;housing_occupancy_status&quot;</span>: {
+        <span class="hljs-string">&quot;2016-01&quot;</span>: <span class="hljs-string">&quot;Tenant&quot;</span>, 
+        <span class="hljs-string">&quot;2016-02&quot;</span>: <span class="hljs-string">&quot;Tenant&quot;</span>, 
+        <span class="hljs-string">&quot;2016-03&quot;</span>: <span class="hljs-string">&quot;Owner&quot;</span>, 
+        <span class="hljs-string">&quot;2016-04&quot;</span>: <span class="hljs-string">&quot;Owner&quot;</span>, 
+        <span class="hljs-string">&quot;2016-05&quot;</span>: <span class="hljs-string">&quot;Owner&quot;</span>, 
+        <span class="hljs-string">&quot;2016-06&quot;</span>: <span class="hljs-string">&quot;Owner&quot;</span>, 
+        <span class="hljs-string">&quot;2016-07&quot;</span>: <span class="hljs-string">&quot;Owner&quot;</span>, 
+        <span class="hljs-string">&quot;2016-08&quot;</span>: <span class="hljs-string">&quot;Owner&quot;</span>, 
+        <span class="hljs-string">&quot;2016-09&quot;</span>: <span class="hljs-string">&quot;Owner&quot;</span>, 
+        <span class="hljs-string">&quot;2016-10&quot;</span>: <span class="hljs-string">&quot;Owner&quot;</span>, 
+        <span class="hljs-string">&quot;2016-11&quot;</span>: <span class="hljs-string">&quot;Owner&quot;</span>, 
+        <span class="hljs-string">&quot;2016-12&quot;</span>: <span class="hljs-string">&quot;Owner&quot;</span>
+      }, 
+      <span class="hljs-string">&quot;housing_tax&quot;</span>: {
+        <span class="hljs-string">&quot;2016&quot;</span>: <span class="hljs-number">570.0</span>
+      }, 
+      <span class="hljs-string">&quot;parents&quot;</span>: [
+        <span class="hljs-string">&quot;Bill&quot;</span>
+      ]
+    }
+  }, 
+  <span class="hljs-string">&quot;persons&quot;</span>: {
+    <span class="hljs-string">&quot;Bill&quot;</span>: {}, 
+    <span class="hljs-string">&quot;Bob&quot;</span>: {}, 
+    <span class="hljs-string">&quot;Janet&quot;</span>: {}, 
+    <span class="hljs-string">&quot;Ricarda&quot;</span>: {
+      <span class="hljs-string">&quot;income_tax&quot;</span>: {
+        <span class="hljs-string">&quot;2016-06&quot;</span>: <span class="hljs-number">525.0</span>
+      }, 
+      <span class="hljs-string">&quot;salary&quot;</span>: {
+        <span class="hljs-string">&quot;2016-01&quot;</span>: <span class="hljs-number">3500</span>, 
+        <span class="hljs-string">&quot;2016-02&quot;</span>: <span class="hljs-number">3500</span>, 
+        <span class="hljs-string">&quot;2016-03&quot;</span>: <span class="hljs-number">3500</span>, 
+        <span class="hljs-string">&quot;2016-04&quot;</span>: <span class="hljs-number">3500</span>, 
+        <span class="hljs-string">&quot;2016-05&quot;</span>: <span class="hljs-number">3500</span>, 
+        <span class="hljs-string">&quot;2016-06&quot;</span>: <span class="hljs-number">3500</span>, 
+        <span class="hljs-string">&quot;2016-07&quot;</span>: <span class="hljs-number">3500</span>, 
+        <span class="hljs-string">&quot;2016-08&quot;</span>: <span class="hljs-number">3500</span>, 
+        <span class="hljs-string">&quot;2016-09&quot;</span>: <span class="hljs-number">4000</span>, 
+        <span class="hljs-string">&quot;2016-10&quot;</span>: <span class="hljs-number">4000</span>, 
+        <span class="hljs-string">&quot;2016-11&quot;</span>: <span class="hljs-number">4000</span>, 
+        <span class="hljs-string">&quot;2016-12&quot;</span>: <span class="hljs-number">4000</span>
+      }
+    }
+  }
+}
+</code></pre>
+<blockquote>
+<p>Note that elements might appear in a different order in the response. However the structure of the file stays the same.</p>
+</blockquote>
 
                     
                     </section>
@@ -920,10 +1092,10 @@
         </div>
 
         
-        <a href="../openfisca-web-api/endpoints.html" class="navigation navigation-prev " aria-label="Previous page: Official API"><i class="fa fa-angle-left"></i></a>
+        <a href="../openfisca-web-api/endpoints.html" class="navigation navigation-prev " aria-label="Previous page: Endpoints"><i class="fa fa-angle-left"></i></a>
         
         
-        <a href="../openfisca-web-api/reforms.html" class="navigation navigation-next " aria-label="Next page: Reforms"><i class="fa fa-angle-right"></i></a>
+        <a href="../openfisca-web-api/deprecated-api.html" class="navigation navigation-next " aria-label="Next page: Deprecated API"><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>

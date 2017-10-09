@@ -37,7 +37,7 @@
         
     
     
-    <link rel="next" href="../openfisca-web-api/preview-api.html" />
+    <link rel="next" href="../openfisca-web-api/endpoints.html" />
     
     
     <link rel="prev" href="../coding-the-legislation/bootstrapping_a_new_country_package.html" />
@@ -53,7 +53,7 @@
         data-chapter-title="OpenFisca Web API"
         data-filepath="openfisca-web-api/README.md"
         data-basepath=".."
-        data-revision="Wed Sep 27 2017 23:11:49 GMT+0000 (UTC)"
+        data-revision="Mon Oct 09 2017 19:08:17 GMT+0000 (UTC)"
         data-innerlanguage="">
     
 
@@ -447,44 +447,29 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="3.1" data-path="openfisca-web-api/preview-api.html">
-            
-                
-                    <a href="../openfisca-web-api/preview-api.html">
-                
-                        <i class="fa fa-check"></i>
-                        
-                            <b>3.1.</b>
-                        
-                        Preview API
-                    </a>
-            
-            
-        </li>
-    
-        <li class="chapter " data-level="3.2" data-path="openfisca-web-api/endpoints.html">
+        <li class="chapter " data-level="3.1" data-path="openfisca-web-api/endpoints.html">
             
                 
                     <a href="../openfisca-web-api/endpoints.html">
                 
                         <i class="fa fa-check"></i>
                         
-                            <b>3.2.</b>
+                            <b>3.1.</b>
                         
-                        Official API
+                        Endpoints
                     </a>
             
             
         </li>
     
-        <li class="chapter " data-level="3.3" data-path="openfisca-web-api/input-output-data.html">
+        <li class="chapter " data-level="3.2" data-path="openfisca-web-api/input-output-data.html">
             
                 
                     <a href="../openfisca-web-api/input-output-data.html">
                 
                         <i class="fa fa-check"></i>
                         
-                            <b>3.3.</b>
+                            <b>3.2.</b>
                         
                         Input and output data
                     </a>
@@ -492,16 +477,16 @@
             
         </li>
     
-        <li class="chapter " data-level="3.4" data-path="openfisca-web-api/reforms.html">
+        <li class="chapter " data-level="3.3" data-path="openfisca-web-api/deprecated-api.html">
             
                 
-                    <a href="../openfisca-web-api/reforms.html">
+                    <a href="../openfisca-web-api/deprecated-api.html">
                 
                         <i class="fa fa-check"></i>
                         
-                            <b>3.4.</b>
+                            <b>3.3.</b>
                         
-                        Reforms
+                        Deprecated API
                     </a>
             
             
@@ -819,35 +804,30 @@
                     <section class="normal" id="section-">
                     
                         <h1 id="openfisca-web-api">OpenFisca Web API</h1>
-<p>The OpenFisca project provides a web API package in order to do computations over HTTP, sending and receiving JSON data.</p>
-<h2 id="use-cases">Use cases</h2>
-<p>If you cannot or don&apos;t want to interact directly with the Python API, for example if you&apos;re developing a web application.</p>
-<h3 id="examples">Examples</h3>
-<p>Those projects use the OpenFisca Web API:</p>
+<p>OpenFisca provides a web API package compatible with all country packages.
+Using a web interface, App Developers can access information and computations without installing anything locally.</p>
+<h2 id="public-france-api">Public France API</h2>
+<p>The latest version of the France web api is <a href="https://fr.openfisca.org/api/v18" target="_blank"><code>https://fr.openfisca.org/api/v18</code></a>.
+Its endpoints are documented in <a href="https://legislation.openfisca.fr/swagger" target="_blank"><code>legislation.openfisca.fr/swagger</code></a>.
+The stability of this API is guaranteed over time.</p>
+<h2 id="use-cases">Use Cases</h2>
+<p>The following services use the OpenFisca Web API:</p>
 <ul>
 <li><a href="https://legislation.openfisca.fr" target="_blank">legislation.openfisca.fr</a>, giving you information on available OpenFisca variables.</li>
 <li><a href="https://mes-aides.gouv.fr" target="_blank">Mes Aides</a>, the French social benefits simulator.</li>
 <li><a href="https://pa-comp.firebaseapp.com" target="_blank">PA-comp</a>, a divorce fiscal impact simulator.</li>
 </ul>
-<h2 id="architecture">Architecture</h2>
-<p>The web API supports different use-cases, from getting information on the available tax and benefit system to full-fledged simulation. Different <a href="endpoints.html">endpoints</a> support each of them. Each endpoint encodes its information in a <a href="input-output-data.html">JSON object</a>.</p>
-<h2 id="public-or-hosted">Public or hosted</h2>
-<p>The OpenFisca API is available through two different means, each coming with its set of constraints.</p>
-<h3 id="public-api-instance">Public API instance</h3>
-<p>The OpenFisca project provides a free and unrestricted instance of the API, complete with the French tax and benefit system, on <a href="https://api.openfisca.fr" target="_blank"><code>api.openfisca.fr</code></a>.</p>
-<p>This instance is great for getting a feel of the API, testing, or even deploying small applications, but please note that it is continuously updated. Every update to the endpoints, or to the tax and benefit system, will be automatically deployed to this host without prior notice, including breaking changes.
-If you use this host, it is your responsibility to stay up-to-date with all legislation changes that could impact your application.</p>
-<h4 id="conditions">Conditions</h4>
-<p>The public instance comes with no warranty at all. We provide it on a <em>best-effort</em> basis, with no <a href="https://en.wikipedia.org/wiki/Service-level_agreement" target="_blank">SLA</a> and no performance engagement.</p>
-<h3 id="host-your-own-instance">Host your own instance</h3>
-<p>Once you&apos;ve developed your application and want to decrease the rhythm of development, the safer and more scalable way to use the API is to <a href="https://github.com/openfisca/openfisca-web-api/tree/master/production-config" target="_blank">deploy your own instance</a>.</p>
-<h4 id="conditions">Conditions</h4>
+<h2 id="conditions">Conditions</h2>
 <p>Please remember that OpenFisca is free software, licensed under an <a href="https://choosealicense.com/licenses/agpl-3.0/" target="_blank">Affero GPL license</a>. That means you have to provide access to the source code of the API you make available, including any changes you might have made on the original code. You also have to provide a link to the OpenFisca source code, and state its license, in a place that is easily discoverable by users of your software.</p>
 <p>You could for example add one the following lines to a &#x201C;credits&#x201D; page:</p>
 <pre><code class="lang-html">Computations done by <span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">&quot;https://openfisca.fr&quot;</span>&gt;</span>OpenFisca<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span>, the <span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">&quot;https://choosealicense.com/licenses/agpl-3.0/&quot;</span> <span class="hljs-attribute">title</span>=<span class="hljs-value">&quot;AGPL-3.0&quot;</span>&gt;</span>free and open-source<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span> social and fiscal computation engine. Source code available at <span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">&quot;https://github.com/openfisca&quot;</span>&gt;</span>github.com/openfisca<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span>.
 </code></pre>
 <pre><code class="lang-html">Calculs effectu&#xE9;s par <span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">&quot;https://openfisca.fr&quot;</span>&gt;</span>OpenFisca<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span>, le moteur <span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">&quot;https://choosealicense.com/licenses/agpl-3.0/&quot;</span> <span class="hljs-attribute">title</span>=<span class="hljs-value">&quot;AGPL-3.0&quot;</span>&gt;</span>libre et ouvert<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span> du syst&#xE8;me social et fiscal. Code source disponible sur <span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">&quot;https://github.com/openfisca&quot;</span>&gt;</span>github.com/openfisca<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span>.
 </code></pre>
+<h2 id="hosting-an-api-instance">Hosting an API instance</h2>
+<p>Let App Developers access your country package information and computations by serving the web API that comes bundled with the OpenFisca-Core module. See the <a href="https://github.com/openfisca/openfisca-core#serving-the-api" target="_blank">technical documentation</a> for serving instructions.</p>
+<h3 id="track-your-api">Track your API</h3>
+<p>If you want to track how your API is being used, you can install the <a href="https://github.com/openfisca/openfisca-core#tracker" target="_blank">OpenFisca Tracker</a>.</p>
 
                     
                     </section>
@@ -861,7 +841,7 @@ If you use this host, it is your responsibility to stay up-to-date with all legi
         <a href="../coding-the-legislation/bootstrapping_a_new_country_package.html" class="navigation navigation-prev " aria-label="Previous page: Bootstrapping a new country package"><i class="fa fa-angle-left"></i></a>
         
         
-        <a href="../openfisca-web-api/preview-api.html" class="navigation navigation-next " aria-label="Next page: Preview API"><i class="fa fa-angle-right"></i></a>
+        <a href="../openfisca-web-api/endpoints.html" class="navigation navigation-next " aria-label="Next page: Endpoints"><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>

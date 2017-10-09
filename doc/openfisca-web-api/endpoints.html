@@ -5,7 +5,7 @@
         
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <title>Official API | OpenFisca</title>
+        <title>Endpoints | OpenFisca</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="generator" content="GitBook 2.6.7">
@@ -40,7 +40,7 @@
     <link rel="next" href="../openfisca-web-api/input-output-data.html" />
     
     
-    <link rel="prev" href="../openfisca-web-api/preview-api.html" />
+    <link rel="prev" href="../openfisca-web-api/index.html" />
     
 
         
@@ -49,11 +49,11 @@
         
         
     <div class="book"
-        data-level="3.2"
-        data-chapter-title="Official API"
+        data-level="3.1"
+        data-chapter-title="Endpoints"
         data-filepath="openfisca-web-api/endpoints.md"
         data-basepath=".."
-        data-revision="Wed Sep 27 2017 23:11:49 GMT+0000 (UTC)"
+        data-revision="Mon Oct 09 2017 19:08:17 GMT+0000 (UTC)"
         data-innerlanguage="">
     
 
@@ -447,44 +447,29 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="3.1" data-path="openfisca-web-api/preview-api.html">
-            
-                
-                    <a href="../openfisca-web-api/preview-api.html">
-                
-                        <i class="fa fa-check"></i>
-                        
-                            <b>3.1.</b>
-                        
-                        Preview API
-                    </a>
-            
-            
-        </li>
-    
-        <li class="chapter active" data-level="3.2" data-path="openfisca-web-api/endpoints.html">
+        <li class="chapter active" data-level="3.1" data-path="openfisca-web-api/endpoints.html">
             
                 
                     <a href="../openfisca-web-api/endpoints.html">
                 
                         <i class="fa fa-check"></i>
                         
-                            <b>3.2.</b>
+                            <b>3.1.</b>
                         
-                        Official API
+                        Endpoints
                     </a>
             
             
         </li>
     
-        <li class="chapter " data-level="3.3" data-path="openfisca-web-api/input-output-data.html">
+        <li class="chapter " data-level="3.2" data-path="openfisca-web-api/input-output-data.html">
             
                 
                     <a href="../openfisca-web-api/input-output-data.html">
                 
                         <i class="fa fa-check"></i>
                         
-                            <b>3.3.</b>
+                            <b>3.2.</b>
                         
                         Input and output data
                     </a>
@@ -492,16 +477,16 @@
             
         </li>
     
-        <li class="chapter " data-level="3.4" data-path="openfisca-web-api/reforms.html">
+        <li class="chapter " data-level="3.3" data-path="openfisca-web-api/deprecated-api.html">
             
                 
-                    <a href="../openfisca-web-api/reforms.html">
+                    <a href="../openfisca-web-api/deprecated-api.html">
                 
                         <i class="fa fa-check"></i>
                         
-                            <b>3.4.</b>
+                            <b>3.3.</b>
                         
-                        Reforms
+                        Deprecated API
                     </a>
             
             
@@ -819,401 +804,13 @@
                     <section class="normal" id="section-">
                     
                         <h1 id="endpoints">Endpoints</h1>
-<p>The examples on this page use <a href="http://curl.haxx.se/" target="_blank"><code>curl</code></a> to send the HTTP request.</p>
-<p>You may use <a href="https://stedolan.github.io/jq/" target="_blank"><code>jq</code></a> to format the JSON response, like so:</p>
-<pre><code class="lang-sh">curl https://api.openfisca.fr/foo | jq .
-</code></pre>
-<blockquote>
-<p><code>jq</code> won&apos;t be mentioned on each example, feel free to add it like above.</p>
-</blockquote>
-<h2 id=""><code>/</code></h2>
-<p>Displays a friendly welcome message.</p>
+<p>Each OpenFisca Country Package web API comes with a set of endpoints including an OpenAPI specification on the <code>/spec</code> route.
+You can check out the <code>OpenFisca-France</code> <a href="https://legislation.openfisca.fr/swagger" target="_blank">swagger documentation</a> to see how their endpoints work.</p>
+<p>The Openfisca Web API can be used to:</p>
 <ul>
-<li>URL path: <code>/</code></li>
-<li>method: GET</li>
+<li>access information about the parameters (e.g. <code>/parameters</code>) and variables (e.g. <code>/variables</code>) of the Country Package.</li>
+<li>run simulations (e.g. <code>/calculate</code>) on a specific situation. To describe a situation, learn more about the Web API <a href="input-output-data.html">inputs and outputs</a>. </li>
 </ul>
-<p>Example:</p>
-<pre><code class="lang-sh">curl https://api.openfisca.fr/
-</code></pre>
-<pre><code class="lang-json">{<span class="hljs-string">&quot;apiVersion&quot;</span>: <span class="hljs-number">1</span>, <span class="hljs-string">&quot;message&quot;</span>: <span class="hljs-string">&quot;Welcome, this is OpenFisca Web API.&quot;</span>, <span class="hljs-string">&quot;method&quot;</span>: <span class="hljs-string">&quot;/&quot;</span>}
-</code></pre>
-<h2 id="formula"><code>/formula</code></h2>
-<p>Computes a variable in a RESTful way.</p>
-<blockquote>
-<p>An implicit test case is created with a single person.</p>
-</blockquote>
-<ul>
-<li>URL path: <code>/api/2/formula/&lt;period&gt;/&lt;variable_name&gt;</code><ul>
-<li><code>&lt;period&gt;</code> is a <a href="../periodsinstants.html#api">period encoded as a string</a></li>
-<li><code>variable_name</code> is the name of you variable you want to compute.</li>
-</ul>
-</li>
-<li>method: GET</li>
-<li>Inputs are given as query string parameters</li>
-</ul>
-<p>Example:</p>
-<pre><code class="lang-sh">curl <span class="hljs-string">&quot;https://api.openfisca.fr/api/2/formula/2017-02/cout_du_travail?salaire_de_base=2300&quot;</span>
-</code></pre>
-<pre><code class="lang-json">{
-  <span class="hljs-string">&quot;values&quot;</span>: {
-    <span class="hljs-string">&quot;cout_du_travail&quot;</span>: <span class="hljs-number">3078.4599609375</span>
-  },
-  <span class="hljs-string">&quot;params&quot;</span>: {
-    <span class="hljs-string">&quot;salaire_de_base&quot;</span>: <span class="hljs-number">2300</span>
-  },
-  <span class="hljs-string">&quot;period&quot;</span>: [ <span class="hljs-string">&quot;month&quot;</span>, [ <span class="hljs-number">2017</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span> ], <span class="hljs-number">1</span> ],
-  <span class="hljs-string">&quot;apiVersion&quot;</span>: <span class="hljs-string">&quot;2.1.0&quot;</span>
-}
-</code></pre>
-<h2 id="calculate"><code>/calculate</code></h2>
-<blockquote>
-<p>This endpoint is quite complex and you may want to use the <a href="#formula"><code>formula</code></a> endpoint.</p>
-</blockquote>
-<p>Computes a test case.</p>
-<ul>
-<li>URL path: <code>/api/1/calculate</code></li>
-<li>method: POST</li>
-<li>required headers:<ul>
-<li><code>Content-Type: application/json</code></li>
-</ul>
-</li>
-<li>JSON request structure:<ul>
-<li><code>output_format</code> (string, one of [&quot;test_case&quot;, &quot;variables&quot;], default: &quot;test_case&quot;): the output format of <code>value</code> field in response.<ul>
-<li>with <code>test_case</code>: <code>value</code> will be a list of test cases identical to the input test cases given in <code>scenarios</code> key, with computed variables dispatched in the right entity.</li>
-<li>with <code>variables</code>: <code>value</code> will be a list of objects like <code>{&lt;variableName&gt;: &lt;variableValue&gt;}</code></li>
-</ul>
-</li>
-<li><code>reforms</code> (list of strings, one of the keys given by the <a href="#reforms"><code>reforms</code></a> endpoint, default: null): applies mentioned reforms to the simulation and returns results for before and after application.</li>
-<li><code>scenarios</code> (list of objects): a list of <a href="input-output-data.html#scenarios">scenarios</a></li>
-<li><code>validate</code> (boolean, default: false): when true the simulation isn&apos;t launched, but the scenarios are validated.</li>
-<li><code>variables</code> (list of strings): the name of the variables to compute</li>
-</ul>
-</li>
-<li>JSON response structure:<ul>
-<li><code>suggestions</code> (list of objects): suggested variables values for the input test_case, actually used by the simulation. Different than variables default values since it depends on the input test_case.</li>
-<li><code>value</code> (list or object, depending on the <code>output_format</code> value): The simulation result.
-Each output variable value is a list which length is equal to the number of entities on which the variable is defined.</li>
-</ul>
-</li>
-</ul>
-<p>Example: let&apos;s run a simple simulation with a single person with no salary.</p>
-<p>Create a file named <code>test_case.json</code> with these contents:</p>
-<pre><code class="lang-json">{
-  <span class="hljs-string">&quot;scenarios&quot;</span>: [
-    {
-      <span class="hljs-string">&quot;test_case&quot;</span>: {
-        <span class="hljs-string">&quot;familles&quot;</span>: [
-          {
-            <span class="hljs-string">&quot;parents&quot;</span>: [<span class="hljs-string">&quot;individu0&quot;</span>]
-          }
-        ],
-        <span class="hljs-string">&quot;foyers_fiscaux&quot;</span>: [
-          {
-            <span class="hljs-string">&quot;declarants&quot;</span>: [<span class="hljs-string">&quot;individu0&quot;</span>]
-          }
-        ],
-        <span class="hljs-string">&quot;individus&quot;</span>: [
-          {
-            <span class="hljs-string">&quot;date_naissance&quot;</span>: <span class="hljs-string">&quot;1980-01-01&quot;</span>,
-            <span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-string">&quot;individu0&quot;</span>
-          }
-        ],
-        <span class="hljs-string">&quot;menages&quot;</span>: [
-          {
-            <span class="hljs-string">&quot;personne_de_reference&quot;</span>: <span class="hljs-string">&quot;individu0&quot;</span>
-          }
-        ]
-      },
-      <span class="hljs-string">&quot;period&quot;</span>: <span class="hljs-string">&quot;2015&quot;</span>
-    }
-  ],
-  <span class="hljs-string">&quot;variables&quot;</span>: [<span class="hljs-string">&quot;revenu_disponible&quot;</span>]
-}
-</code></pre>
-<pre><code class="lang-sh">curl https://api.openfisca.fr/api/<span class="hljs-number">1</span>/calculate -X POST --data @./<span class="hljs-built_in">test</span>_case.json --header <span class="hljs-string">&apos;Content-type: application/json&apos;</span>
-</code></pre>
-<p>The output is:</p>
-<pre><code class="lang-json">{
-  <span class="hljs-string">&quot;apiVersion&quot;</span>: <span class="hljs-number">1</span>,
-  <span class="hljs-string">&quot;method&quot;</span>: <span class="hljs-string">&quot;/api/1/calculate&quot;</span>,
-  <span class="hljs-string">&quot;params&quot;</span>: {
-    [...]
-  },
-  <span class="hljs-string">&quot;url&quot;</span>: <span class="hljs-string">&quot;http://api.openfisca.fr/api/1/calculate&quot;</span>,
-  <span class="hljs-string">&quot;value&quot;</span>: [
-    {
-      <span class="hljs-string">&quot;familles&quot;</span>: [
-        {
-          <span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-number">0</span>,
-          <span class="hljs-string">&quot;parents&quot;</span>: [
-            <span class="hljs-string">&quot;individu0&quot;</span>
-          ]
-        }
-      ],
-      <span class="hljs-string">&quot;foyers_fiscaux&quot;</span>: [
-        {
-          <span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-number">0</span>,
-          <span class="hljs-string">&quot;declarants&quot;</span>: [
-            <span class="hljs-string">&quot;individu0&quot;</span>
-          ]
-        }
-      ],
-      <span class="hljs-string">&quot;individus&quot;</span>: [
-        {
-          <span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-string">&quot;individu0&quot;</span>,
-          <span class="hljs-string">&quot;date_naissance&quot;</span>: <span class="hljs-string">&quot;1980-01-01&quot;</span>
-        }
-      ],
-      <span class="hljs-string">&quot;menages&quot;</span>: [
-        {
-          <span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-number">0</span>,
-          <span class="hljs-string">&quot;personne_de_reference&quot;</span>: <span class="hljs-string">&quot;individu0&quot;</span>,
-          <span class="hljs-string">&quot;revenu_disponible&quot;</span>: {
-            <span class="hljs-string">&quot;2015&quot;</span>: <span class="hljs-number">5305.3701171875</span>
-          }
-        }
-      ]
-    }
-  ]
-}
-</code></pre>
-<p>What is important is the <code>value</code> key containing the value of <code>revdisp</code> for the period <code>2015</code>: <code>5332.37</code>.</p>
-<blockquote>
-<p>See also the <code>simulate</code> endpoint.</p>
-</blockquote>
-<h2 id="entities"><code>/entities</code></h2>
-<p>Gets the entities definition data. <a href="../person,_entities,_role.html">Entities</a> are a key concept of OpenFisca.</p>
-<ul>
-<li>URL path: <code>/api/2/entities</code></li>
-<li>method: GET</li>
-</ul>
-<p>Example:</p>
-<pre><code class="lang-sh">curl https://api.openfisca.fr/api/<span class="hljs-number">2</span>/entities
-</code></pre>
-<pre><code class="lang-json">{
-  <span class="hljs-string">&quot;apiVersion&quot;</span>: <span class="hljs-number">1</span>,
-  <span class="hljs-string">&quot;entities&quot;</span>: {
-    <span class="hljs-string">&quot;famille&quot;</span>: {
-      <span class="hljs-string">&quot;roles&quot;</span>: [
-        {
-          <span class="hljs-string">&quot;subroles&quot;</span>: [
-            <span class="hljs-string">&quot;demandeur&quot;</span>,
-            <span class="hljs-string">&quot;conjoint&quot;</span>
-          ],
-          <span class="hljs-string">&quot;plural&quot;</span>: <span class="hljs-string">&quot;parents&quot;</span>,
-          <span class="hljs-string">&quot;key&quot;</span>: <span class="hljs-string">&quot;parent&quot;</span>,
-          <span class="hljs-string">&quot;label&quot;</span>: <span class="hljs-string">&quot;Parents&quot;</span>
-        },
-        {
-          <span class="hljs-string">&quot;plural&quot;</span>: <span class="hljs-string">&quot;enfants&quot;</span>,
-          <span class="hljs-string">&quot;key&quot;</span>: <span class="hljs-string">&quot;enfant&quot;</span>,
-          <span class="hljs-string">&quot;label&quot;</span>: <span class="hljs-string">&quot;Enfants&quot;</span>
-        }
-      ],
-      <span class="hljs-string">&quot;label&quot;</span>: <span class="hljs-string">&quot;Famille&quot;</span>
-    },
-    <span class="hljs-string">&quot;foyer_fiscal&quot;</span>: {
-      <span class="hljs-string">&quot;roles&quot;</span>: [
-        {
-          <span class="hljs-string">&quot;subroles&quot;</span>: [
-            <span class="hljs-string">&quot;declarant_principal&quot;</span>,
-            <span class="hljs-string">&quot;conjoint&quot;</span>
-          ],
-          <span class="hljs-string">&quot;plural&quot;</span>: <span class="hljs-string">&quot;declarants&quot;</span>,
-          <span class="hljs-string">&quot;key&quot;</span>: <span class="hljs-string">&quot;declarant&quot;</span>,
-          <span class="hljs-string">&quot;label&quot;</span>: <span class="hljs-string">&quot;D&#xE9;clarants&quot;</span>
-        },
-        {
-          <span class="hljs-string">&quot;plural&quot;</span>: <span class="hljs-string">&quot;personnes_a_charge&quot;</span>,
-          <span class="hljs-string">&quot;key&quot;</span>: <span class="hljs-string">&quot;personne_a_charge&quot;</span>,
-          <span class="hljs-string">&quot;label&quot;</span>: <span class="hljs-string">&quot;Personnes &#xE0; charge&quot;</span>
-        }
-      ],
-      <span class="hljs-string">&quot;label&quot;</span>: <span class="hljs-string">&quot;D&#xE9;claration d&#x2019;imp&#xF4;ts&quot;</span>
-    },
-    <span class="hljs-string">&quot;individu&quot;</span>: {
-      <span class="hljs-string">&quot;isPersonsEntity&quot;</span>: <span class="hljs-literal">true</span>,
-      <span class="hljs-string">&quot;label&quot;</span>: <span class="hljs-string">&quot;Individu&quot;</span>
-    },
-    <span class="hljs-string">&quot;menage&quot;</span>: {
-      <span class="hljs-string">&quot;roles&quot;</span>: [
-        {
-          <span class="hljs-string">&quot;max&quot;</span>: <span class="hljs-number">1</span>,
-          <span class="hljs-string">&quot;key&quot;</span>: <span class="hljs-string">&quot;personne_de_reference&quot;</span>,
-          <span class="hljs-string">&quot;label&quot;</span>: <span class="hljs-string">&quot;Personne de r&#xE9;f&#xE9;rence&quot;</span>
-        },
-        {
-          <span class="hljs-string">&quot;max&quot;</span>: <span class="hljs-number">1</span>,
-          <span class="hljs-string">&quot;key&quot;</span>: <span class="hljs-string">&quot;conjoint&quot;</span>,
-          <span class="hljs-string">&quot;label&quot;</span>: <span class="hljs-string">&quot;Conjoint&quot;</span>
-        },
-        {
-          <span class="hljs-string">&quot;plural&quot;</span>: <span class="hljs-string">&quot;enfants&quot;</span>,
-          <span class="hljs-string">&quot;key&quot;</span>: <span class="hljs-string">&quot;enfant&quot;</span>,
-          <span class="hljs-string">&quot;label&quot;</span>: <span class="hljs-string">&quot;Enfants&quot;</span>
-        },
-        {
-          <span class="hljs-string">&quot;plural&quot;</span>: <span class="hljs-string">&quot;autres&quot;</span>,
-          <span class="hljs-string">&quot;key&quot;</span>: <span class="hljs-string">&quot;autre&quot;</span>,
-          <span class="hljs-string">&quot;label&quot;</span>: <span class="hljs-string">&quot;Autres&quot;</span>
-        }
-      ],
-      <span class="hljs-string">&quot;label&quot;</span>: <span class="hljs-string">&quot;Logement principal&quot;</span>
-    }
-  },
-  <span class="hljs-string">&quot;method&quot;</span>: <span class="hljs-string">&quot;/api/2/entities&quot;</span>,
-  <span class="hljs-string">&quot;params&quot;</span>: {
-    [...]
-  }
-}
-</code></pre>
-<p>This data is useful when building a dynamic UI with forms allowing the user to make a test case, for example.</p>
-<h2 id="parameters"><code>/parameters</code></h2>
-<p><strong>This route is now available in a simpler and more developper-friendly version. Please check our <a href="preview-api.html">preview API</a> and give us feedback!</strong></p>
-<p>Gets the legislation parameters of the tax and benefit system.</p>
-<ul>
-<li>URL path: <code>/api/1/parameters</code></li>
-<li>method: GET</li>
-<li>query string parameters:<ul>
-<li><code>name</code> (string, multi-valuated, default: null): the name(s) of the parameters to return. If null all the known parameters are returned.</li>
-<li><code>instant</code> (see <a href="../periodsinstants.html">periods and instants</a>, default: null): if given, returns the legislation parameters at this instant. Can only be used in conjunction with the <code>name</code> query string parameter.</li>
-</ul>
-</li>
-<li>JSON response structure:<ul>
-<li><code>country_package_name</code> (string): the name of the Python package containing the tax and benefit system of the country loaded by the Web API.
-Example: <code>&quot;openfisca_france&quot;</code>.</li>
-<li><code>country_package_version</code> (string): the version of the Python package containing the tax and benefit system of the country loaded by the Web API</li>
-<li><code>currency</code> (string): the currency of the tax and benefit system of the country loaded by the Web API</li>
-<li><code>parameters</code> (list of objects): a list of OpenFisca parameters.</li>
-</ul>
-</li>
-</ul>
-<p>Examples:</p>
-<ul>
-<li><a href="https://api.openfisca.fr/api/1/parameters" target="_blank">https://api.openfisca.fr/api/1/parameters</a></li>
-<li><a href="https://api.openfisca.fr/api/1/parameters?name=impot_revenu.bareme" target="_blank">https://api.openfisca.fr/api/1/parameters?name=impot_revenu.bareme</a></li>
-</ul>
-<blockquote>
-<p>JSON responses are too large to be copied here.</p>
-</blockquote>
-<h2 id="reforms"><code>/reforms</code></h2>
-<p>Get the list of reforms known by the Web API, with their keys and labels.</p>
-<p>Those reforms keys can be passed either to the <code>calculate</code> or <code>simulate</code> endpoints.</p>
-<p>Example:</p>
-<pre><code class="lang-sh">curl https://api.openfisca.fr/api/<span class="hljs-number">1</span>/reforms
-</code></pre>
-<pre><code class="lang-json">{
-  <span class="hljs-string">&quot;apiVersion&quot;</span>: <span class="hljs-number">1</span>,
-  <span class="hljs-string">&quot;method&quot;</span>: <span class="hljs-string">&quot;/api/1/reforms&quot;</span>,
-  <span class="hljs-string">&quot;params&quot;</span>: {
-    <span class="hljs-string">&quot;context&quot;</span>: <span class="hljs-literal">null</span>
-  },
-  <span class="hljs-string">&quot;reforms&quot;</span>: {
-    <span class="hljs-string">&quot;allocations_familiales_imposables&quot;</span>: <span class="hljs-string">&quot;Allocations familiales imposables&quot;</span>,
-    <span class="hljs-string">&quot;ayrault_muet&quot;</span>: <span class="hljs-string">&quot;Amendement Ayrault-Muet au PLF2016&quot;</span>,
-    <span class="hljs-string">&quot;cesthra_invalidee&quot;</span>: <span class="hljs-string">&quot;Contribution execptionnelle sur les tr&#xE8;s hauts revenus d&apos;activit&#xE9; (invalid&#xE9;e par le CC)&quot;</span>,
-    <span class="hljs-string">&quot;plf2015&quot;</span>: <span class="hljs-string">&quot;Projet de Loi de Finances 2015 appliqu&#xE9;e aux revenus 2013&quot;</span>,
-    <span class="hljs-string">&quot;plf2016&quot;</span>: <span class="hljs-string">&quot;Projet de Loi de Finances 2016 appliqu&#xE9;e aux revenus 2014&quot;</span>,
-    <span class="hljs-string">&quot;plf2016_counterfactual&quot;</span>: <span class="hljs-string">&quot;Contrefactuel du PLF 2016 sur les revenus 2015&quot;</span>,
-    <span class="hljs-string">&quot;plf2016_counterfactual_2014&quot;</span>: <span class="hljs-string">&quot;Contrefactuel 2014 du PLF 2016 sur les revenus 2015&quot;</span>,
-    <span class="hljs-string">&quot;trannoy_wasmer&quot;</span>: <span class="hljs-string">&quot;Loyer comme charge d&#xE9;ductible (Trannoy-Wasmer)&quot;</span>
-  },
-  <span class="hljs-string">&quot;url&quot;</span>: <span class="hljs-string">&quot;http://api.openfisca.fr/api/1/reforms&quot;</span>
-}
-</code></pre>
-<h2 id="simulate"><code>/simulate</code></h2>
-<blockquote>
-<p>This endpoint is quite complex and you may want to use the <a href="#formula"><code>formula</code></a> endpoint.</p>
-</blockquote>
-<p>Computes an input test case, returning the results dispatched in a decomposition of the tax and benefit system.</p>
-<blockquote>
-<p>The decomposition is based on <a href="https://github.com/openfisca/openfisca-france/blob/master/openfisca_france/decompositions/decomp.xml" target="_blank">decomp.xml</a>.</p>
-</blockquote>
-<ul>
-<li>URL path: <code>/api/1/simulate</code></li>
-<li>method: POST</li>
-<li>required headers:<ul>
-<li><code>Content-Type: application/json</code></li>
-</ul>
-</li>
-<li>JSON request structure:<ul>
-<li><code>scenarios</code> (list of objects): a list of <a href="input-output-data.html#scenarios">JSON scenarios</a></li>
-<li><code>reforms</code> (list of strings, one of the keys given by the <a href="#reforms"><code>reforms</code></a> endpoint, default: null): applies mentioned reforms to the simulation and returns results for before and after application.</li>
-<li><code>validate</code> (boolean, default: false): when true the simulation isn&apos;t launched, but the scenarios are validated.</li>
-</ul>
-</li>
-<li>JSON response structure:<ul>
-<li><code>suggestions</code> (list of objects): suggested variables values for the input test_case, actually used by the simulation. Different than variables default values since it depends on the input test_case.</li>
-<li><code>value</code> (object): the simulation result</li>
-</ul>
-</li>
-</ul>
-<p>Example: let&apos;s run a simple simulation with a single person with no salary.</p>
-<p>Create a file named <code>test_case.json</code> with these contents:</p>
-<pre><code class="lang-json">{
-  <span class="hljs-string">&quot;scenarios&quot;</span>: [
-    {
-      <span class="hljs-string">&quot;test_case&quot;</span>: {
-        <span class="hljs-string">&quot;familles&quot;</span>: [
-          {
-            <span class="hljs-string">&quot;parents&quot;</span>: [<span class="hljs-string">&quot;individu0&quot;</span>]
-          }
-        ],
-        <span class="hljs-string">&quot;foyers_fiscaux&quot;</span>: [
-          {
-            <span class="hljs-string">&quot;declarants&quot;</span>: [<span class="hljs-string">&quot;individu0&quot;</span>]
-          }
-        ],
-        <span class="hljs-string">&quot;individus&quot;</span>: [
-          {
-            <span class="hljs-string">&quot;date_naissance&quot;</span>: <span class="hljs-string">&quot;1980-01-01&quot;</span>,
-            <span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-string">&quot;individu0&quot;</span>
-          }
-        ],
-        <span class="hljs-string">&quot;menages&quot;</span>: [
-          {
-            <span class="hljs-string">&quot;personne_de_reference&quot;</span>: <span class="hljs-string">&quot;individu0&quot;</span>
-          }
-        ]
-      },
-      <span class="hljs-string">&quot;period&quot;</span>: <span class="hljs-string">&quot;2015&quot;</span>
-    }
-  ]
-}
-</code></pre>
-<pre><code class="lang-sh">curl https://api.openfisca.fr/api/<span class="hljs-number">1</span>/simulate -X POST --data @./<span class="hljs-built_in">test</span>_case.json --header <span class="hljs-string">&apos;Content-type: application/json&apos;</span>
-</code></pre>
-<blockquote>
-<p>The JSON output is too large to be displayed here.</p>
-<p>See also the <code>calculate</code> endpoint.</p>
-</blockquote>
-<h2 id="variables"><code>/variables</code></h2>
-<p><strong>This route is now available in a simpler and more developper-friendly version. Please check our <a href="preview-api.html">preview API</a> and give us feedback!</strong></p>
-<p>Gets the variables defined in the tax and benefit system.</p>
-<ul>
-<li>URL path: <code>/api/1/variables</code></li>
-<li>method: GET</li>
-<li>query string parameters:<ul>
-<li><code>name</code> (string, multi-valuated, default: null): the names of the variables to return. If null all the known variables are returned.</li>
-</ul>
-</li>
-<li>JSON response structure:<ul>
-<li><code>country_package_name</code> (string): the name of the Python package containing the tax and benefit system of the country loaded by the Web API.
-Example: <code>&quot;openfisca_france&quot;</code>.</li>
-<li><code>country_package_version</code> (string): the version of the Python package containing the tax and benefit system of the country loaded by the Web API</li>
-<li><code>currency</code> (string): the currency of the tax and benefit system of the country loaded by the Web API</li>
-<li><code>variables</code> (list of objects): a list of <a href="input-output-data.html#variables">JSON variables</a></li>
-</ul>
-</li>
-</ul>
-<p>Examples:</p>
-<ul>
-<li><a href="https://api.openfisca.fr/api/1/variables" target="_blank">https://api.openfisca.fr/api/1/variables</a></li>
-<li><a href="https://api.openfisca.fr/api/1/variables?name=irpp" target="_blank">https://api.openfisca.fr/api/1/variables?name=irpp</a></li>
-</ul>
-<blockquote>
-<p>The JSON output is too large to be displayed here.</p>
-</blockquote>
 
                     
                     </section>
@@ -1224,7 +821,7 @@ Example: <code>&quot;openfisca_france&quot;</code>.</li>
         </div>
 
         
-        <a href="../openfisca-web-api/preview-api.html" class="navigation navigation-prev " aria-label="Previous page: Preview API"><i class="fa fa-angle-left"></i></a>
+        <a href="../openfisca-web-api/index.html" class="navigation navigation-prev " aria-label="Previous page: OpenFisca Web API"><i class="fa fa-angle-left"></i></a>
         
         
         <a href="../openfisca-web-api/input-output-data.html" class="navigation navigation-next " aria-label="Next page: Input and output data"><i class="fa fa-angle-right"></i></a>
