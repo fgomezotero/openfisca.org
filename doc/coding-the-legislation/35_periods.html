@@ -53,7 +53,7 @@
         data-chapter-title="Periods"
         data-filepath="coding-the-legislation/35_periods.md"
         data-basepath=".."
-        data-revision="Tue Nov 21 2017 13:42:46 GMT+0000 (UTC)"
+        data-revision="Tue Nov 21 2017 13:51:44 GMT+0000 (UTC)"
         data-innerlanguage="">
     
 
@@ -809,7 +809,7 @@
 <p>Most of the quantities calculated in openfisca can change over time. Therefore, each formula calculates a variable for a person (or a family, etc.) <strong>for a given period</strong>.</p>
 <p>This period is always the second argument of the formulas:</p>
 <pre><code class="lang-py"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">salary</span><span class="hljs-params">(Variable)</span>:</span>
-    column = FloatCol
+    value_type = float
     entity = Person
     label = <span class="hljs-string">u&quot;Salary for a month&quot;</span>
     definition_period = MONTH
@@ -826,7 +826,7 @@
 <h2 id="calculating-dependencies-for-a-period-different-than-the-one-they-are-defined-for">Calculating dependencies for a period different than the one they are defined for</h2>
 <p>Calling a formula with a period that is incompatible with the attribute <code>definition_period</code> will cause an error. For instance, if we assume that a person <code>salary</code> is paid monthly:</p>
 <pre><code class="lang-py"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">taxes</span><span class="hljs-params">(Variable)</span>:</span>
-    column = FloatCol
+    value_type = float
     entity = Person
     label = <span class="hljs-string">u&quot;Taxes for a whole year&quot;</span>
     definition_period = YEAR
@@ -838,7 +838,7 @@
 <p>However, sometimes, we do need to estimate a variable for a different period than the one it is defined for.</p>
 <p>We may for example want to get the sum of the salaries perceived on the past year, or the past 3 months. The option <code>ADD</code> tells openfisca to split the period into months, compute the variable for each month and sum up the results:</p>
 <pre><code class="lang-py"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">taxes</span><span class="hljs-params">(Variable)</span>:</span>
-    column = FloatCol
+    value_type = float
     entity = Person
     label = <span class="hljs-string">u&quot;Taxes for a whole year&quot;</span>
     definition_period = YEAR
@@ -849,7 +849,7 @@
 </code></pre>
 <p>The option <code>DIVIDE</code> allows you to do the opposite: evaluating a quantity for a month while the variable is defined for a year. Openfisca computes the variable for the whole year that contains the specified month and then divides the result by 12.</p>
 <pre><code class="lang-py"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">salary_net_of_taxes</span><span class="hljs-params">(Variable)</span>:</span>
-    column = FloatCol
+    value_type = float
     entity = Person
     label = <span class="hljs-string">u&quot;Monthly salary, net of taxes&quot;</span>
     definition_period = MONTH
@@ -867,7 +867,7 @@
 <p>It happens that the formula to calculate a variable at a given period needs the value of another variable for another period. Usually, the second period is defined relatively to the first one (previous month, last three month, current year).</p>
 <p>For instance, we want to compute an unemployment benefit that equals half of last year&apos;s salary, if the person had no income for the past 3 months.</p>
 <pre><code class="lang-py"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">unemployment_benefit</span><span class="hljs-params">(Variable)</span>:</span>
-    column = FloatCol
+    value_type = float
     entity = Person
     label = <span class="hljs-string">u&quot;Unemployment benefit&quot;</span>
     definition_period = MONTH
@@ -949,7 +949,7 @@
 </ul>
 <p>For instance, let&apos;s slightly modify the code of <code>salary</code>:</p>
 <pre><code class="lang-py"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">salary</span><span class="hljs-params">(Variable)</span>:</span>
-    column = FloatCol
+    value_type = float
     entity = Person
     label = <span class="hljs-string">u&quot;Salary for a month&quot;</span>
     definition_period = MONTH

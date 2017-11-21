@@ -53,7 +53,7 @@
         data-chapter-title="Entities"
         data-filepath="coding-the-legislation/50_entities.md"
         data-basepath=".."
-        data-revision="Tue Nov 21 2017 13:42:46 GMT+0000 (UTC)"
+        data-revision="Tue Nov 21 2017 13:51:44 GMT+0000 (UTC)"
         data-innerlanguage="">
     
 
@@ -834,7 +834,7 @@
 <li>The sum of salaries from all household members are deducted from the amount of the benefit.</li>
 </ul>
 <pre><code class="lang-py"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">basic_income</span><span class="hljs-params">(Variable)</span>:</span>
-    column = FloatCol
+    value_type = float
     entity = Household
     label = <span class="hljs-string">u&quot;Basic income paid to households&quot;</span>
     definition_period = MONTH
@@ -854,7 +854,7 @@
 <p><code>person.entity(&apos;variable_name&apos;, period)</code> allows you to get the value of <code>variable_name</code> for the entity containing <code>person</code>.</p>
 <p>Let&apos;s for example consider that any college student whose family benefits from the basic income will also individually be granted a scholarship of 100&#x20AC; per month:</p>
 <pre><code class="lang-py"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">college_scholarship</span><span class="hljs-params">(Variable)</span>:</span>
-    column = FloatCol
+    value_type = float
     entity = Person
     label = <span class="hljs-string">u&quot;College Scholarship for basic income recipients.&quot;</span>
     definition_period = MONTH

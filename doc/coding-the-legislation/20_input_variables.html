@@ -53,7 +53,7 @@
         data-chapter-title="Introducing an input variable"
         data-filepath="coding-the-legislation/20_input_variables.md"
         data-basepath=".."
-        data-revision="Tue Nov 21 2017 13:42:46 GMT+0000 (UTC)"
+        data-revision="Tue Nov 21 2017 13:51:44 GMT+0000 (UTC)"
         data-innerlanguage="">
     
 
@@ -807,7 +807,7 @@
 <p>The syntax to introduce an input variable is very similar to the one we used to code a formula.</p>
 <p>For instance:</p>
 <pre><code class="lang-py"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">salary</span><span class="hljs-params">(Variable)</span>:</span>
-    column = FloatCol
+    value_type = float
     entity = Person
     label = <span class="hljs-string">u&quot;Salary earned by a person for a given month&quot;</span>
     definition_period = MONTH
@@ -819,9 +819,10 @@
 <li>The <strong>default value</strong> of the Variable if no input has been provided.</li>
 </ul>
 <h2 id="setting-a-default-value">Setting a default value</h2>
-<p>When declaring an input variable, you can change its default value by adding the argument <code>default</code> to the <code>column</code> attribute:</p>
+<p>When declaring an input variable, you can change its default value by adding the <code>default_value</code> attribute:</p>
 <pre><code class="lang-py"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">french_citizen</span><span class="hljs-params">(Variable)</span>:</span>
-    column = BoolCol(default = <span class="hljs-keyword">True</span>)
+    value_type = bool
+    default_value = <span class="hljs-keyword">True</span>
     entity = Person
     label = <span class="hljs-string">u&quot;Whether the person is a French citizen&quot;</span>
     definition_period = YEAR
@@ -855,29 +856,47 @@ We can express this through the enum type.  </p>
 <p>For example, <code>HOUSING_OCCUPANCY_STATUS[&apos;Tenant&apos;]</code> will return <code>0</code>, <code>HOUSING_OCCUPANCY_STATUS[&apos;Owner&apos;]</code> will return <code>1</code>, <code>HOUSING_OCCUPANCY_STATUS[&apos;Free lodger&apos;]</code> will return <code>2</code>, ...</p>
 </blockquote>
 <ol>
-<li>Create an OpenFisca variable <code>housing_occupancy_status</code>:  </li>
+<li>Create an OpenFisca variable <code>housing_occupancy_status</code>. The Enum can be referenced or declared in the Variable:  </li>
 </ol>
+<blockquote>
+<p>Referenced: </p>
 <pre><code class="lang-py"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">housing_occupancy_status</span><span class="hljs-params">(Variable)</span>:</span>
-    column = EnumCol(
-        enum = HOUSING_OCCUPANCY_STATUS
-        )
+    value_type = Enum
+    possible_values = HOUSING_OCCUPANCY_STATUS
     entity = Household
     definition_period = MONTH
     label = <span class="hljs-string">u&quot;Legal housing situation of the household concerning their main residence&quot;</span>
 </code></pre>
-<p>This variable links the <code>HOUSING_OCCUPANCY_STATUS</code> to a specific entity and period (<code>Household</code> and <code>MONTH</code> here).  </p>
-<p>A default value can also be added:</p>
-<pre><code class="lang-py">    column = EnumCol(
-        enum = HOUSING_OCCUPANCY_STATUS,
-        default = <span class="hljs-number">1</span>  <span class="hljs-comment"># &apos;Owner&apos;</span>
-        )
+<p>Declared in the variable: </p>
+<pre><code class="lang-py"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">housing_occupancy_status</span><span class="hljs-params">(Variable)</span>:</span>
+    value_type = Enum
+    possible_values = Enum([
+        <span class="hljs-string">u&apos;Tenant&apos;</span>,
+        <span class="hljs-string">u&apos;Owner&apos;</span>,
+        <span class="hljs-string">u&apos;Free logder&apos;</span>,
+        <span class="hljs-string">u&apos;Homeless&apos;</span>
+        ])
+    entity = Household
+    definition_period = MONTH
+    label = <span class="hljs-string">u&quot;Legal housing situation of the household concerning their main residence&quot;</span>
+</code></pre>
+</blockquote>
+<p>A <code>default_value</code> can also be added:</p>
+<pre><code class="lang-py">    value_type = Enum
+    possible_values = Enum([
+        <span class="hljs-string">u&apos;Tenant&apos;</span>,
+        <span class="hljs-string">u&apos;Owner&apos;</span>,
+        <span class="hljs-string">u&apos;Free logder&apos;</span>,
+        <span class="hljs-string">u&apos;Homeless&apos;</span>
+        ])
+    default_value = <span class="hljs-number">1</span>  <span class="hljs-comment"># &apos;Owner&apos;</span>
 </code></pre>
 <ol>
 <li>Use the enum in a variable formula:  </li>
 </ol>
 <p>In a formula, get <code>housing_occupancy_status</code> for a given <code>month</code> by calling <code>household(&apos;housing_occupancy_status&apos;, month)</code>.  </p>
 <pre><code class="lang-py"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">housing_tax</span><span class="hljs-params">(Variable)</span>:</span>
-    column = FloatCol
+    value_type = bool
     entity = Household
     definition_period = YEAR  <span class="hljs-comment"># This housing tax is defined for a year.</span>
     label = <span class="hljs-string">u&quot;Tax paid by each household proportionnally to the size of its accommodation&quot;</span>

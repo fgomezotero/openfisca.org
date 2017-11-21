@@ -53,7 +53,7 @@
         data-chapter-title="Legislation evolutions"
         data-filepath="coding-the-legislation/40_legislation_evolutions.md"
         data-basepath=".."
-        data-revision="Tue Nov 21 2017 13:42:46 GMT+0000 (UTC)"
+        data-revision="Tue Nov 21 2017 13:51:44 GMT+0000 (UTC)"
         data-innerlanguage="">
     
 
@@ -853,7 +853,7 @@
 <p>For instance, let&apos;s assume that from the 1st of Jan. 2017, the <code>flat_tax_on_salary</code> is not applied anymore on the first <code>1000</code> earned by a person.</p>
 <p>We implement this rule by adding a new formula to our variable, and <em>dating</em> it:</p>
 <pre><code class="lang-py"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">flat_tax_on_salary</span><span class="hljs-params">(Variable)</span>:</span>
-    column = FloatCol
+    value_type = float
     entity = Person
     label = <span class="hljs-string">u&quot;Individualized and monthly paid tax on salaries&quot;</span>
     definition_period = MONTH
@@ -895,7 +895,7 @@
 <p>But most fiscal and benefit mechanisms have been introduced at some point. Let&apos;s for instance assume that our <code>flat_tax_on_salary</code> only appeared in our legislation on the 1st of June 2005. </p>
 <p>This is easily implemented by <em>dating</em> the two formulas:</p>
 <pre><code class="lang-py"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">flat_tax_on_salary</span><span class="hljs-params">(Variable)</span>:</span>
-    column = FloatCol
+    value_type = float
     entity = Person
     label = <span class="hljs-string">u&quot;Individualized and monthly paid tax on salaries&quot;</span>
     definition_period = MONTH
@@ -917,7 +917,7 @@
 <p>Let&apos;s for instance assume that a <code>progressive_income_tax</code> used to exist before the <code>flat_tax_on_salary</code> was introduced. This progressive tax then disapeared on the 1st of June 2005.</p>
 <p>This is implemented with an <code>end</code> attribute that define the <em>last day</em> a variable can be calculated:</p>
 <pre><code class="lang-py"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">progressive_income_tax</span><span class="hljs-params">(Variable)</span>:</span>
-    column = FloatCol
+    value_type = float
     entity = Person
     label = <span class="hljs-string">u&quot;Former tax replaced by the flat tax on the 1st of June 2005&quot;</span>
     definition_period = MONTH

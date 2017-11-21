@@ -53,7 +53,7 @@
         data-chapter-title="Parameters"
         data-filepath="coding-the-legislation/legislation_parameters.md"
         data-basepath=".."
-        data-revision="Tue Nov 21 2017 13:42:46 GMT+0000 (UTC)"
+        data-revision="Tue Nov 21 2017 13:51:44 GMT+0000 (UTC)"
         data-innerlanguage="">
     
 
@@ -1016,7 +1016,7 @@ zone_1:
         value: 150
 (...)
 </code></pre><p>In this case, <code>parameters(period).housing_benefit[zone]</code> would raise en error, whatever <code>zone</code> contains, as <strong>the homogeneity condition is not respected</strong>: <code>housing_benefit.zone_1</code> is a node, while <code>housing_benefit.coeff_furnished</code> is a parameter.</p>
-<p>To solve this issue, the good practice would be to create an intermediate node <code>amount_by_node</code>:</p>
+<p>To solve this issue, the good practice would be to create an intermediate node <code>amount_by_zone</code>:</p>
 <p><code>housing_benefit.yaml</code> content:</p>
 <pre><code>coeff_furnished:
   description: &quot;Coefficient to apply if the accomodation is rented furnished&quot;
@@ -1033,6 +1033,48 @@ amount_by_zone:
           value: 150
   (...)
 </code></pre><p>And then to get <code>parameters(period).housing_benefit.amount_by_zone[zone]</code>  </p>
+<h2 id="how-to-navigate-the-parameters-in-python">How to navigate the parameters in Python</h2>
+<p>Set-up your python file by importing a <code>country package</code> and building the <code>tax and benefits system</code></p>
+<blockquote>
+<p>Example :</p>
+<pre><code>import openfisca_country_template
+tax_benefit_system = openfisca_country_template.CountryTaxBenefitSystem()
+</code></pre><h3 id="access-a-parameter-for-all-periods">Access a parameter for all periods</h3>
+</blockquote>
+<p>To access a point in the parameter tree, call <code>tax_benefit_system.parameters</code> </p>
+<blockquote>
+<p>Example : 
+Access the <code>benefit</code> branch of the <code>openfisca-country-template</code> legislation</p>
+<pre><code class="lang-py">tax_benefit_system.parameters.benefits
+</code></pre>
+<p>Returns: </p>
+<pre><code class="lang-sh">basic_income:
+    <span class="hljs-number">2015</span>-<span class="hljs-number">12</span>-<span class="hljs-number">01</span>: <span class="hljs-number">600.0</span>
+housing_allowance:
+  <span class="hljs-number">2016</span>-<span class="hljs-number">12</span>-<span class="hljs-number">01</span>: None
+  <span class="hljs-number">2010</span>-<span class="hljs-number">01</span>-<span class="hljs-number">01</span>: <span class="hljs-number">0.25</span>
+</code></pre>
+<p>Access <code>basic_income</code>, a parameter of the <code>benefits</code> branch.</p>
+<pre><code class="lang-py">tax_benefit_system.parameters.benefits.basic_income
+</code></pre>
+<p>Returns:</p>
+<pre><code class="lang-sh"><span class="hljs-number">2015</span>-<span class="hljs-number">12</span>-<span class="hljs-number">01</span>: <span class="hljs-number">600.0</span>
+</code></pre>
+<h3 id="access-a-parameter-for-a-specific-period">Access a parameter for a specific period</h3>
+</blockquote>
+<p>Request a branch of a parameter at a given date with the <code>parameters.benefits(&apos;2015-07-01&apos;)</code> notation.</p>
+<h2 id="how-to-update-parameters-in-python">How to update parameters in python</h2>
+<p>To add an entry to an existing parameter, use <code>update</code>:</p>
+<blockquote>
+<p>Example:</p>
+<pre><code class="lang-py">tax_benefit_system.parameters.benefits.basic_bro.update(<span class="hljs-string">&quot;2017-01&quot;</span>, value = <span class="hljs-number">2000</span>)
+tax_benefit_system.parameters.benefits.basic_bro
+</code></pre>
+<p>Returns:</p>
+<pre><code class="lang-sh"><span class="hljs-number">2017</span>-<span class="hljs-number">01</span>-<span class="hljs-number">01</span>: <span class="hljs-number">2000</span>
+<span class="hljs-number">2015</span>-<span class="hljs-number">12</span>-<span class="hljs-number">01</span>: <span class="hljs-number">600.0</span>
+</code></pre>
+</blockquote>
 
                     
                     </section>
