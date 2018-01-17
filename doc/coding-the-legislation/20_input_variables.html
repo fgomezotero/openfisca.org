@@ -53,7 +53,7 @@
         data-chapter-title="Introducing an input variable"
         data-filepath="coding-the-legislation/20_input_variables.md"
         data-basepath=".."
-        data-revision="Mon Nov 27 2017 09:16:12 GMT+0000 (UTC)"
+        data-revision="Wed Jan 17 2018 08:35:35 GMT+0000 (UTC)"
         data-innerlanguage="">
     
 
@@ -831,104 +831,86 @@
 <ul>
 <li>For numeric variables: <code>0</code>.</li>
 <li>For boolean variables: <code>False</code>.</li>
-<li>For enum variables: the item of index <code>0</code>.</li>
 </ul>
 <h2 id="advanced-example-enumerations-enum">Advanced example: enumerations (enum)</h2>
-<h3 id="when-to-use-enums">When to use enums?</h3>
-<p>Let&apos;s say you want to write a <code>housing_tax</code> that depends on the occupancy status of the inhabitants. </p>
-<blockquote>
-<p>Example: Only Tenants and Owners pay the housing tax. Free Lodgers and Homeless people are exempted. </p>
-</blockquote>
-<p><code>housing_occupancy_status</code> will be an input variable, and have a limited set of possible values (e.g. Owner, Tenant ...). 
-We can express this through the enum type.  </p>
-<h3 id="how-to-use-the-enum-in-an-input-variable">How to use the enum in an input variable?</h3>
-<ol>
-<li>Create an <a href="https://en.wikipedia.org/wiki/Enumerated_type" target="_blank">enumerated type</a> <code>HOUSING_OCCUPANCY_STATUS</code>:  </li>
-</ol>
-<pre><code class="lang-py">HOUSING_OCCUPANCY_STATUS = Enum([
-    <span class="hljs-string">u&apos;Tenant&apos;</span>,
-    <span class="hljs-string">u&apos;Owner&apos;</span>,
-    <span class="hljs-string">u&apos;Free lodger&apos;</span>,
-    <span class="hljs-string">u&apos;Homeless&apos;</span>])
+<h3 id="usecases">Usecases</h3>
+<p>Enumerations are variables that have a limited set of possible values. For instance:</p>
+<ul>
+<li>A person&apos;s relationship status: married, single, divorced.</li>
+<li>A household housing occupancy status: owner, tenant, free-lodger, homeless.</li>
+<li>The main occupation of a person: employee, freelance, retired, student, unemployed.</li>
+</ul>
+<h3 id="defining-and-using-an-enumeration-variable">Defining and using an enumeration variable</h3>
+<p>As an example, let&apos;s code a <code>housing_tax</code> that is paid by households who own or rent their main homes, but does not apply to households that do not have a stable residence, or are accommodated for free.</p>
+<p>The variable <code>housing_tax</code> will thus depend on <code>housing_occupancy_status</code>, an enumeration variable that can take 4 values: <code>tenant</code>, <code>owner</code>, <code>free_lodger</code> and <code>homeless</code>.</p>
+<p>First, we can create an <a href="https://en.wikipedia.org/wiki/Enumerated_type" target="_blank">enumerated type</a> <code>HousingOccupancyStatus</code>:</p>
+<pre><code class="lang-py"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">HousingOccupancyStatus</span><span class="hljs-params">(Enum)</span>:</span>
+    tenant = <span class="hljs-string">u&apos;Tenant or lodger who pays a rent&apos;</span>
+    owner = <span class="hljs-string">u&apos;Owner&apos;</span>
+    free_lodger = <span class="hljs-string">u&apos;Free logder&apos;</span>
+    homeless = <span class="hljs-string">u&apos;Homeless&apos;</span>
 </code></pre>
-<p>Enum items are referenced by their index (starting at <code>0</code>).</p>
 <blockquote>
-<p>For example, <code>HOUSING_OCCUPANCY_STATUS[&apos;Tenant&apos;]</code> will return <code>0</code>, <code>HOUSING_OCCUPANCY_STATUS[&apos;Owner&apos;]</code> will return <code>1</code>, <code>HOUSING_OCCUPANCY_STATUS[&apos;Free lodger&apos;]</code> will return <code>2</code>, ...</p>
+<p>OpenFisca enums are based on Python 3 native enums. Each enum item (for instance <code>HousingOccupancyStatus.tenant</code>) has:</p>
+<ul>
+<li>a <code>name</code> attribute that contains its key (e.g. <code>tenant</code>)</li>
+<li>a <code>value</code> attribute that contains its description (e.g. <code>&quot;Tenant or lodger who pays a monthly rent&quot;</code>)</li>
+</ul>
 </blockquote>
-<ol>
-<li>Create an OpenFisca variable <code>housing_occupancy_status</code>. The Enum can be referenced or declared in the Variable:  </li>
-</ol>
-<blockquote>
-<p>Referenced: </p>
+<p>Then, create an OpenFisca variable <code>housing_occupancy_status</code>:</p>
 <pre><code class="lang-py"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">housing_occupancy_status</span><span class="hljs-params">(Variable)</span>:</span>
     value_type = Enum
-    possible_values = HOUSING_OCCUPANCY_STATUS
+    possible_values = HousingOccupancyStatus
+    default_value = HousingOccupancyStatus.tenant  <span class="hljs-comment"># The default is mandatory</span>
     entity = Household
     definition_period = MONTH
     label = <span class="hljs-string">u&quot;Legal housing situation of the household concerning their main residence&quot;</span>
 </code></pre>
-<p>Declared in the variable: </p>
-<pre><code class="lang-py"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">housing_occupancy_status</span><span class="hljs-params">(Variable)</span>:</span>
-    value_type = Enum
-    possible_values = Enum([
-        <span class="hljs-string">u&apos;Tenant&apos;</span>,
-        <span class="hljs-string">u&apos;Owner&apos;</span>,
-        <span class="hljs-string">u&apos;Free logder&apos;</span>,
-        <span class="hljs-string">u&apos;Homeless&apos;</span>
-        ])
-    entity = Household
-    definition_period = MONTH
-    label = <span class="hljs-string">u&quot;Legal housing situation of the household concerning their main residence&quot;</span>
-</code></pre>
-</blockquote>
-<p>A <code>default_value</code> can also be added:</p>
-<pre><code class="lang-py">    value_type = Enum
-    possible_values = Enum([
-        <span class="hljs-string">u&apos;Tenant&apos;</span>,
-        <span class="hljs-string">u&apos;Owner&apos;</span>,
-        <span class="hljs-string">u&apos;Free logder&apos;</span>,
-        <span class="hljs-string">u&apos;Homeless&apos;</span>
-        ])
-    default_value = <span class="hljs-number">1</span>  <span class="hljs-comment"># &apos;Owner&apos;</span>
-</code></pre>
-<ol>
-<li>Use the enum in a variable formula:  </li>
-</ol>
-<p>In a formula, get <code>housing_occupancy_status</code> for a given <code>month</code> by calling <code>household(&apos;housing_occupancy_status&apos;, month)</code>.  </p>
+<p>You can now use the enum in variable formulas !</p>
+<p>For instance, assuming the enumeration and the formula using it are defined in the same file:</p>
 <pre><code class="lang-py"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">housing_tax</span><span class="hljs-params">(Variable)</span>:</span>
-    value_type = bool
+    value_type = float
     entity = Household
-    definition_period = YEAR  <span class="hljs-comment"># This housing tax is defined for a year.</span>
+    definition_period = MONTH.
     label = <span class="hljs-string">u&quot;Tax paid by each household proportionnally to the size of its accommodation&quot;</span>
 
     <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">formula</span><span class="hljs-params">(household, period, legislation)</span>:</span>
-        <span class="hljs-comment"># The housing tax is defined for a year, but depends on the `accomodation_size` </span>
-        <span class="hljs-comment"># and `housing_occupancy_status` on the first month of the year.</span>
-        january = period.first_month
-        accommodation_size = household(<span class="hljs-string">&apos;accomodation_size&apos;</span>, january)
-
-        housing_occupancy_status = household(<span class="hljs-string">&apos;housing_occupancy_status&apos;</span>, january)
-        tenant = (housing_occupancy_status == HOUSING_OCCUPANCY_STATUS[<span class="hljs-string">&apos;Tenant&apos;</span>])
-        owner = (housing_occupancy_status == HOUSING_OCCUPANCY_STATUS[<span class="hljs-string">&apos;Owner&apos;</span>])
+        accommodation_size = household(<span class="hljs-string">&apos;accomodation_size&apos;</span>, period)
+        housing_occupancy_status = household(<span class="hljs-string">&apos;housing_occupancy_status&apos;</span>, period)
+        tenant = (housing_occupancy_status == HousingOccupancyStatus.tenant)
+        owner = (housing_occupancy_status == HousingOccupancyStatus.owner)
 
         <span class="hljs-comment"># The tax is applied only if the household owns or rents its main residency</span>
         <span class="hljs-keyword">return</span> (owner + tenant) * accommodation_size * <span class="hljs-number">10</span>
 </code></pre>
-<ol>
-<li>Test the formula by inputing the enum:  </li>
-</ol>
-<p>A YAML test would look as follows:</p>
+<p>If the enumeration and the formula using it are <strong>not</strong> defined in the same file, an extra step is necessary:</p>
+<pre><code class="lang-py"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">housing_tax</span><span class="hljs-params">(Variable)</span>:</span>
+    value_type = float
+    entity = Household
+    definition_period = MONTH.
+    label = <span class="hljs-string">u&quot;Tax paid by each household proportionnally to the size of its accommodation&quot;</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">formula</span><span class="hljs-params">(household, period, legislation)</span>:</span>
+        accommodation_size = household(<span class="hljs-string">&apos;accomodation_size&apos;</span>, period)
+        housing_occupancy_status = household(<span class="hljs-string">&apos;housing_occupancy_status&apos;</span>, period)
+        HousingOccupancyStatus = housing_occupancy_status.possible_values  <span class="hljs-comment"># &quot;Import&quot; the enum type. Careful: do not use python imports accross variables files: comparisons would not work !</span>
+        tenant = (housing_occupancy_status == HousingOccupancyStatus.tenant)
+        owner = (housing_occupancy_status == HousingOccupancyStatus.owner)
+
+        <span class="hljs-comment"># The tax is applied only if the household owns or rents its main residency</span>
+        <span class="hljs-keyword">return</span> (owner + tenant) * accommodation_size * <span class="hljs-number">10</span>
+</code></pre>
+<p>You can now test the formula in a YAML test:</p>
 <pre><code class="lang-yaml">- name: Household with free lodger status living in a 100 sq.meters accomodation
   period: 2017
   input_variables:
     accomodation_size:
       2017-01: 100
     housing_occupancy_status:
-      2017-01: Free lodger
+      2017-01: free_lodger
   output_variables:
     housing_tax: 0
 </code></pre>
-<p>As described in the YAML example above, favor the enum&apos;s string definition in your tests and Web API calls, as it is more readable than the enum index. </p>
 
                     
                     </section>
