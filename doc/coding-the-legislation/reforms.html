@@ -53,7 +53,7 @@
         data-chapter-title="Reforms"
         data-filepath="coding-the-legislation/reforms.md"
         data-basepath=".."
-        data-revision="Fri Apr 06 2018 16:34:51 GMT+0000 (UTC)"
+        data-revision="Mon Apr 09 2018 14:28:11 GMT+0000 (UTC)"
         data-innerlanguage="">
     
 
@@ -847,9 +847,9 @@
 <p>All the <a href="https://openfisca.readthedocs.io/en/latest/tax-benefit-system.html" target="_blank">methods</a> used to build a tax and benefit system can also be used to reform it.</p>
 <p>A reform that modifies a formula (such as our <code>income_tax_reform</code> example) is called a <em>structural reform</em>. It redefines the way a variable is calculated.</p>
 <h3 id="parametric-reforms">Parametric reforms</h3>
-<p>A reform that apply changes to legislation parameters is called a <em>parametric reforms</em>. </p>
+<p>A reform that apply changes to legislation parameters is called a <em>parametric reform</em>.</p>
 <blockquote>
-<p>Note that a reform can be both structural and parametric, modifying and/or adding variables <em>and</em> parameters.</p>
+<p>Note that a reform can be both structural and parametric, modifying and/or adding variables <em>and</em> parameters. In that case, it is common practice to call it a structural reform anyway, the structural part outweighting the parametric one. </p>
 </blockquote>
 <p>To modify the legislation parameters in the reform, you can call the method <code>self.modify_parameters</code>, which takes a function as a parameter.</p>
 <p>This function performs the modifications you want to apply to the legislation. It takes as a parameter a copy of the reference tax and benefit system parameters: <code>parameters</code>. You can then modify and return <code>parameters</code>.</p>
