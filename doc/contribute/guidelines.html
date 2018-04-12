@@ -53,7 +53,7 @@
         data-chapter-title="Contributor guidelines"
         data-filepath="contribute/guidelines.md"
         data-basepath=".."
-        data-revision="Thu Apr 12 2018 11:30:25 GMT+0000 (UTC)"
+        data-revision="Thu Apr 12 2018 22:23:47 GMT+0000 (UTC)"
         data-innerlanguage="">
     
 
@@ -847,7 +847,13 @@
 <li>Opening a Pull Request means you want that code to be merged. If you want to only discuss it, send a link to your branch along with your questions through whichever communication channel you prefer.</li>
 <li>If the Pull Request depends on another opened Pull Request on another repository (like OpenFisca-Core/OpenFisca-France), the requirements should be updated in the dependent project via its <code>setup.py</code>.</li>
 </ul>
-<h3 id="merging-a-pull-request">Merging a Pull Request</h3>
+<p>It is considered a good practice to begin the name of the pull request with a verb in the present imperative tense:</p>
+<pre><code># Good
+Propose a new reform according to the French finance bill 2018
+
+# Bad
+new reform PLF 2018
+</code></pre><h3 id="merging-a-pull-request">Merging a Pull Request</h3>
 <h4 id="continuous-integration">Continuous integration</h4>
 <p>Before allowing you to merge a PR, the continuous integration server will ensure that:</p>
 <ul>
