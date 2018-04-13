@@ -5,7 +5,7 @@
         
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <title>Parameters | OpenFisca</title>
+        <title>Use OpenFisca on the web (no installation required on your computer) | OpenFisca</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="generator" content="GitBook 2.6.7">
@@ -37,10 +37,10 @@
         
     
     
-    <link rel="next" href="./person,_entities,_role.html" />
+    <link rel="next" href="./offline-environment.html" />
     
     
-    <link rel="prev" href="./variables.html" />
+    <link rel="prev" href="./recipes.html" />
     
 
         
@@ -49,9 +49,9 @@
         
         
     <div class="book"
-        data-level="1.3"
-        data-chapter-title="Parameters"
-        data-filepath="parameters.md"
+        data-level="5.1"
+        data-chapter-title="Use OpenFisca on the web (no installation required on your computer)"
+        data-filepath="howto-web-no-local-install.md"
         data-basepath="."
         data-revision="Fri Apr 13 2018 16:21:46 GMT+0000 (UTC)"
         data-innerlanguage="">
@@ -135,7 +135,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.3" data-path="parameters.html">
+        <li class="chapter " data-level="1.3" data-path="parameters.html">
             
                 
                     <a href="./parameters.html">
@@ -528,7 +528,7 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="5.1" data-path="howto-web-no-local-install.html">
+        <li class="chapter active" data-level="5.1" data-path="howto-web-no-local-install.html">
             
                 
                     <a href="./howto-web-no-local-install.html">
@@ -833,17 +833,37 @@
                 
                     <section class="normal" id="section-">
                     
-                        <h1 id="parameters">Parameters</h1>
-<p>A parameter is a numeric property of the legislation which can evolve over time.</p>
-<p>Unlike a <a href="variables.html">variable</a>, a parameter is <strong>not</strong> specific to a specific person or family.</p>
-<p>For instance:</p>
-<ul>
-<li>The amount of the <em>minimum wage</em></li>
-<li>The amount of <em>family allowance per children</em></li>
-<li>The <em>marginal tax scale</em> used to calculate the income tax</li>
-</ul>
-<p>Parameters are used in <a href="variables.html#formulas">formulas</a> to calculate variable values.</p>
-<p><a href="coding-the-legislation/legislation_parameters.html">Read more about their implementation in OpenFisca</a></p>
+                        <h1 id="how-to-use-openfisca-on-your-browser-no-installation-required-on-your-computer">How to use OpenFisca on your browser (no installation required on your computer)</h1>
+<p>If you want to use OpenFisca for running a simulation or evaluating the impact of a reform, without installing anything in your computer, these online services allow you to run OpenFisca directly on your browser, no installation required: <a href="https://repl.it" target="_blank">repl.it</a>, <a href="https://www.pythonanywhere.com" target="_blank">python anywhere</a> and <a href="https://jupyterlab.readthedocs.io/en/stable/" target="_blank">jupyterlab</a>.</p>
+<p>Let&apos;s see how to use OpenFisca on one of those services: <a href="https://repl.it" target="_blank">repl.it</a> &#x1F913;</p>
+<h2 id="instructions">Instructions</h2>
+<ol>
+<li><p>Go to <a href="https://repl.it" target="_blank">repl.it</a> and select <code>Python</code> (i.e. <code>python2.7</code>):</p>
+<p> <a href="https://github.com/openfisca/openfisca-doc/blob/master/img/replit-homepage.png" target="_blank"><img src="https://cdn.rawgit.com/openfisca/openfisca-doc/master/img/replit-homepage.png" alt="repl.it homepage"></a></p>
+</li>
+<li><p>Write the OpenFisca code you wish to run. The default entry point is <code>main.py</code> python file. Example of <code>main.py</code> content using <code>openfisca-country-template</code>:</p>
+<pre><code class="lang-py"> <span class="hljs-keyword">from</span> openfisca_country_template <span class="hljs-keyword">import</span> CountryTaxBenefitSystem
+
+ tax_benefit_system = CountryTaxBenefitSystem()
+ parameters = tax_benefit_system.parameters
+
+ <span class="hljs-keyword">print</span> parameters
+</code></pre>
+<blockquote>
+<p>You can also import files (e.g. JSON files describing input <a href="http://openfisca.org/doc/openfisca-web-api/input-output-data.html#describing-the-situation" target="_blank">situations</a>) by clicking on the <code>import or drop</code> button.
+ <a href="https://github.com/openfisca/openfisca-doc/blob/master/img/replit-upload-drop-button.png" target="_blank"><img src="https://cdn.rawgit.com/openfisca/openfisca-doc/master/img/replit-upload-drop-button.png" alt="repl.it upload &amp; drop button"></a></p>
+</blockquote>
+</li>
+<li><p>Click the <code>run</code> button to execute your code <a href="https://github.com/openfisca/openfisca-doc/blob/master/img/replit-run-button.png" target="_blank"><img src="https://cdn.rawgit.com/openfisca/openfisca-doc/master/img/replit-run-button.png" alt="repl.it run button"></a>.</p>
+<blockquote>
+<p>Your code dependencies are automatically analyzed and imported.</p>
+</blockquote>
+</li>
+<li><p>You&apos;re all set. Check your code results on the right sided python interpreter.</p>
+</li>
+</ol>
+<h2 id="example-evaluating-a-reform-with-openfisca-france-and-replit">Example: evaluating a reform with OpenFisca France and repl.it</h2>
+<p>To see OpenFisca in action in your favourite browser, check out this <a href="https://repl.it/@openfisca/framework-openfisca-france" target="_blank">example of reform to the French tax-benefit system in repl.it</a> (in French)!</p>
 
                     
                     </section>
@@ -854,10 +874,10 @@
         </div>
 
         
-        <a href="./variables.html" class="navigation navigation-prev " aria-label="Previous page: Variables"><i class="fa fa-angle-left"></i></a>
+        <a href="./recipes.html" class="navigation navigation-prev " aria-label="Previous page: Recipes"><i class="fa fa-angle-left"></i></a>
         
         
-        <a href="./person,_entities,_role.html" class="navigation navigation-next " aria-label="Next page: Person, entities, role"><i class="fa fa-angle-right"></i></a>
+        <a href="./offline-environment.html" class="navigation navigation-next " aria-label="Next page: Install OpenFisca in an offline environment"><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>
