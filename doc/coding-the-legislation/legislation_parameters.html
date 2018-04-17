@@ -53,7 +53,7 @@
         data-chapter-title="Parameters"
         data-filepath="coding-the-legislation/legislation_parameters.md"
         data-basepath=".."
-        data-revision="Fri Apr 13 2018 16:21:46 GMT+0000 (UTC)"
+        data-revision="Tue Apr 17 2018 22:37:45 GMT+0000 (UTC)"
         data-innerlanguage="">
     
 
@@ -952,7 +952,7 @@ brackets:
     1950-01-01:
       value: 2000
 </code></pre>
-<p>Example: <a href="https://legislation.openfisca.fr/parameters/impot_revenu.bareme" target="_blank">the french tax scale on income</a></p>
+<p>Example: <a href="https://fr.openfisca.org/legislation/impot_revenu.bareme" target="_blank">the french tax scale on income</a></p>
 <h4 id="import-parameters-from-ipp-tables">Import parameters from IPP tables</h4>
 <blockquote>
 <p>This section applies only to OpenFisca-France.</p>
@@ -1062,7 +1062,7 @@ amount_by_zone:
         2015-01-01:
           value: 150
   (...)
-</code></pre><p>And then to get <code>parameters(period).housing_benefit.amount_by_zone[zone]</code>  </p>
+</code></pre><p>And then to get <code>parameters(period).housing_benefit.amount_by_zone[zone]</code></p>
 <h2 id="how-to-navigate-the-parameters-in-python">How to navigate the parameters in Python</h2>
 <p>Set-up your python file by importing a <code>country package</code> and building the <code>tax and benefits system</code></p>
 <blockquote>
@@ -1071,13 +1071,13 @@ amount_by_zone:
 tax_benefit_system = openfisca_country_template.CountryTaxBenefitSystem()
 </code></pre></blockquote>
 <h3 id="access-a-parameter-for-all-periods">Access a parameter for all periods</h3>
-<p>To access a point in the parameter tree, call <code>tax_benefit_system.parameters</code> </p>
+<p>To access a point in the parameter tree, call <code>tax_benefit_system.parameters</code></p>
 <blockquote>
-<p>Example : 
+<p>Example :
 Access the <code>benefit</code> branch of the <code>openfisca-country-template</code> legislation</p>
 <pre><code class="lang-py">tax_benefit_system.parameters.benefits
 </code></pre>
-<p>Returns: </p>
+<p>Returns:</p>
 <pre><code class="lang-sh">basic_income:
     <span class="hljs-number">2015</span>-<span class="hljs-number">12</span>-<span class="hljs-number">01</span>: <span class="hljs-number">600.0</span>
 housing_allowance:
