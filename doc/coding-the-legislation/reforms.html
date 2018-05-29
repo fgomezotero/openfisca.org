@@ -53,7 +53,7 @@
         data-chapter-title="Reforms"
         data-filepath="coding-the-legislation/reforms.md"
         data-basepath=".."
-        data-revision="Tue May 22 2018 12:51:39 GMT+0000 (UTC)"
+        data-revision="Tue May 29 2018 04:37:26 GMT+0000 (UTC)"
         data-innerlanguage="">
     
 
@@ -849,14 +849,17 @@
 <h3 id="parametric-reforms">Parametric reforms</h3>
 <p>A reform that apply changes to legislation parameters is called a <em>parametric reform</em>.</p>
 <blockquote>
-<p>Note that a reform can be both structural and parametric, modifying and/or adding variables <em>and</em> parameters. In that case, it is common practice to call it a structural reform anyway, the structural part outweighting the parametric one. </p>
+<p>Note that a reform can be both structural and parametric, modifying and/or adding variables <em>and</em> parameters. In that case, it is common practice to call it a structural reform anyway, the structural part outweighting the parametric one.</p>
 </blockquote>
 <p>To modify the legislation parameters in the reform, you can call the method <code>self.modify_parameters</code>, which takes a function as a parameter.</p>
 <p>This function performs the modifications you want to apply to the legislation. It takes as a parameter a copy of the reference tax and benefit system parameters: <code>parameters</code>. You can then modify and return <code>parameters</code>.</p>
+<p>The reform is applied for a certain fixed period. To define the period for which you want to apply the reform, it&apos;s necessary to import <code>periods</code> from <code>openfisca_core</code>.</p>
 <h4 id="update-the-value-of-a-parameter">Update the value of a parameter</h4>
-<pre><code class="lang-python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">modify_parameters</span><span class="hljs-params">(parameters)</span>:</span>
+<pre><code class="lang-python"><span class="hljs-keyword">from</span> openfisca_core <span class="hljs-keyword">import</span> periods
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">modify_parameters</span><span class="hljs-params">(parameters)</span>:</span>
     reform_period = periods.period(<span class="hljs-string">&quot;2015&quot;</span>)
-    parameters.tax_on_salary.scale[<span class="hljs-number">1</span>].threshold.update(period = reform_period, value = <span class="hljs-number">4000</span>)
+    parameters.tax_on_salary.brackets[<span class="hljs-number">1</span>].threshold.update(period = reform_period, value = <span class="hljs-number">4000</span>)
     <span class="hljs-keyword">return</span> parameters
 
 
