@@ -53,7 +53,7 @@
         data-chapter-title="Tests"
         data-filepath="contribute/tests.md"
         data-basepath=".."
-        data-revision="Tue May 29 2018 04:37:26 GMT+0000 (UTC)"
+        data-revision="Thu May 31 2018 01:37:08 GMT+0000 (UTC)"
         data-innerlanguage="">
     
 
@@ -861,20 +861,8 @@ copy-paste this line in your code:</p>
 <blockquote>
 <p>Hint: use the snippets feature of your favorite text editor to save this line, for example give it the name &quot;breakpoint&quot;.</p>
 </blockquote>
-<h2 id="travis-automated-tests">Travis automated tests</h2>
-<p>OpenFisca uses <a href="https://travis-ci.org/openfisca" target="_blank">Travis CI</a> to run tests automatically after each <code>git push</code>.</p>
-<p>The repositories tested by Travis are:</p>
-<ul>
-<li><a href="https://github.com/openfisca/openfisca-core" target="_blank">OpenFisca-Core</a></li>
-<li><a href="https://github.com/openfisca/openfisca-france" target="_blank">OpenFisca-France</a></li>
-<li><a href="https://github.com/openfisca/openfisca-web-api" target="_blank">OpenFisca-Web-API</a></li>
-</ul>
-<p>The OpenFisca website hosts a summary page of the build statuses: <a href="https://www.openfisca.fr/build-status" target="_blank">https://www.openfisca.fr/build-status</a></p>
-<p>Travis tests other git branches than <code>master</code> too. For example: <a href="https://travis-ci.org/openfisca/openfisca-core/branches" target="_blank">OpenFisca-Core</a>.</p>
-<p>For OpenFisca-France, when testing a branch, if there is a branch in OpenFisca-Core with the same name, Travis will checkout it before running the tests. This is done by <a href="https://github.com/openfisca/openfisca-france/blob/master/run-travis-tests.sh" target="_blank">this script</a>.</p>
-<p>Idem for OpenFisca-Web-API with <a href="https://github.com/openfisca/openfisca-web-api/blob/master/run-travis-tests.sh" target="_blank">this script</a> which is sightly different because it handles more dependencies.</p>
-<h2 id="ludwig-tests">Ludwig tests</h2>
-<p>To download tests from <a href="https://mes-aides.gouv.fr/tests/" target="_blank">Ludwig</a> (the tests tool from <a href="https://mes-aides.gouv.fr/" target="_blank">Mes aides</a>), see the script <a href="https://github.com/openfisca/openfisca-france/blob/master/openfisca_france/scripts/download_mes_aides_tests.py" target="_blank">download_mes_aides_tests.py</a>.</p>
+<h2 id="continuous-integration">Continuous integration</h2>
+<p>All OpenFisca official packages are continuously tested. All tests run automatically after each <code>git push</code>.</p>
 
                     
                     </section>

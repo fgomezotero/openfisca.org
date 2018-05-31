@@ -51,7 +51,7 @@
         data-chapter-title="Release process"
         data-filepath="contribute/release-process.md"
         data-basepath=".."
-        data-revision="Tue May 29 2018 04:37:26 GMT+0000 (UTC)"
+        data-revision="Thu May 31 2018 01:37:08 GMT+0000 (UTC)"
         data-innerlanguage="">
     
 
@@ -817,134 +817,13 @@
                     <section class="normal" id="section-">
                     
                         <h1 id="release-process">Release process</h1>
-<h2 id="automated-releasing">Automated releasing</h2>
-<p>The main openfisca packages (core, france, and web-api) are today <strong>continously</strong> and <strong>automatically</strong> released.</p>
-<p>When a Pull Request is merged to master, this CI server (travis) automatically:</p>
+<h2 id="continuous-deployment">Continuous deployment</h2>
+<p>All OpenFisca official packages are continuously released.</p>
+<p>When a pull request is merged to the <code>master</code> branch, a continuous integration server automatically:</p>
 <ul>
-<li>Publish a version tag on github.</li>
-<li>Publish a release on the <a href="https://pypi.python.org/pypi" target="_blank">PyPI</a> repository.</li>
+<li>Publishes a version tag on GitHub.</li>
+<li>Publishes a release on <a href="https://pypi.python.org/pypi" target="_blank">PyPI</a>.</li>
 </ul>
-<h2 id="set-up-automated-releasing-on-a-new-repository">Set up automated releasing on a new repository</h2>
-<ul>
-<li><p>Make sure you have installed the <a href="https://github.com/travis-ci/travis.rb" target="_blank">Travis CI Command Line Client</a></p>
-</li>
-<li><p>Log in to Travis CI using your github credentials:</p>
-<pre><code class="lang-sh">travis login
-</code></pre>
-<h3 id="automated-tagging-on-git">Automated tagging on git</h3>
-</li>
-<li><p>Create a <strong>new</strong> ssh key in your repository. Do <strong>not</strong> push it:</p>
-<pre><code class="lang-sh">ssh-keygen -t rsa -b <span class="hljs-number">4096</span> -C <span class="hljs-string">&quot;bot@openfisca.fr&quot;</span>
-</code></pre>
-</li>
-<li><p>Encrypt the private key.</p>
-<pre><code>travis encrypt-file $id_rsa --add
-</code></pre></li>
-<li><p>Add the public key to the repository in Settings &gt; Deploy keys, with writing rights.</p>
-</li>
-<li><p>Copy and <strong>adapt the repository name</strong> in the <a href="https://github.com/openfisca/openfisca-france/blob/4.0.0/release-tag.sh" target="_blank"><code>release-tag.sh</code></a> script into the repository.</p>
-</li>
-<li><p>Edit <code>.travis.yaml</code> to:</p>
-<ul>
-<li>Decrypt the ssh key in <code>before_deploy</code> instead of <code>before_install</code>.</li>
-<li>Add the <a href="https://github.com/openfisca/openfisca-france/blob/4.0.0/.travis.yml#L19" target="_blank">deployment instructions</a>.</li>
-</ul>
-</li>
-</ul>
-<ul>
-<li>Only push the encrypted key. You can remove both the private and public keys after making sure the automatic tagging works as expected.</li>
-</ul>
-<h3 id="automated-releasing-on-pypy">Automated releasing on Pypy</h3>
-<ul>
-<li><p>Make sure you know the credentials for the <code>openfisca-bot</code> Pypi user.</p>
-</li>
-<li><p>Give <code>openfisca-bot</code> maintainer&apos;s right on Pypi.</p>
-</li>
-<li><p>Encrypt the <code>openfisca-bot</code> password:</p>
-<pre><code>travis encrypt
-</code></pre></li>
-<li><p>Edit <code>.travis.yaml</code> to:</p>
-<ul>
-<li><a href="https://github.com/openfisca/openfisca-core/blob/2.0.1/.travis.yml#L21" target="_blank">Compile</a> the <a href="">internationalization</a> catalog in <code>before_deploy</code>, if needed.</li>
-<li>Add the <a href="https://github.com/openfisca/openfisca-core/blob/2.0.1/.travis.yml#L30" target="_blank">deployment instructions</a>. Replace the encrypted password by what <code>travis encrypt</code> generated.</li>
-</ul>
-</li>
-</ul>
-<h1 id="deprecated">Deprecated</h1>
-<h2 id="manual-releasing">Manual releasing</h2>
-<p>Here are the steps to follow to build and release a Python package.
-Execute them on each Git repository you want to publish:</p>
-<ul>
-<li><a href="https://github.com/openfisca/openfisca-core" target="_blank">OpenFisca-Core</a></li>
-<li><a href="https://github.com/openfisca/openfisca-web-api" target="_blank">OpenFisca-Web-API</a></li>
-</ul>
-<p>See also:</p>
-<ul>
-<li><a href="http://legacy.python.org/dev/peps/pep-0440/#public-version-identifiers" target="_blank">PEP 440: public version identifiers</a></li>
-<li><a href="https://python-packaging-user-guide.readthedocs.org/en/latest/distributing.html" target="_blank">distributing packages guide</a></li>
-<li><a href="https://pythonhosted.org/setuptools/setuptools.html" target="_blank">setuptools</a></li>
-<li><a href="http://semver.org/" target="_blank">semver</a></li>
-</ul>
-<h3 id="steps-to-execute">Steps to execute</h3>
-<h4 id="tests">Tests</h4>
-<p>Open the <a href="https://www.openfisca.fr/build-status" target="_blank">build-status</a> page to check that the build status of every project is &quot;passing&quot; (green color).</p>
-<blockquote>
-<p>Check that there are no pending tests by clicking on the badges.</p>
-<p>If there are errors, click on a badge to open the corresponding Travis page.</p>
-<p>You can also execute the tests by yourself: do <code>git pull</code> in every project on the branch <code>master</code>, and run <code>make test</code> in each project.</p>
-</blockquote>
-<h3 id="internationalization-i18n">Internationalization (i18n)</h3>
-<p>If the project does not use <a href="http://babel.pocoo.org/" target="_blank">Python-Babel</a> to translate strings, skip this section. Check by looking for the <code>Babel</code> entry in <code>install_requires =</code> of <code>setup.py</code>.</p>
-<p>Extract strings to translate from source code to <code>.pot</code> file and update <code>.po</code> catalog files:</p>
-<pre><code class="lang-bash">python setup.py extract_messages update_catalog
-</code></pre>
-<p>Translate <code>.po</code> catalog files using <a href="https://poedit.net/" target="_blank">poedit</a> for example:</p>
-<pre><code class="lang-bash">poedit /path/to/i18n/fr/LC_MESSAGES/fr.po
-</code></pre>
-<p>Ensure that <code>Project-Id-Version</code> in <code>.pot</code> and <code>.po</code> files are correct.</p>
-<p>Commit modified files if needed:</p>
-<pre><code class="lang-bash">git commit -am <span class="hljs-string">&quot;Update i18n translations&quot;</span>
-</code></pre>
-<p>Compile catalog <code>.po</code> files:</p>
-<pre><code class="lang-bash">python setup.py compile_catalog
-</code></pre>
-<p>It should display <code>(100%) translated</code>.</p>
-<h3 id="create-the-release-commit">Create the release commit</h3>
-<p>In <code>setup.py</code> check the <code>install_requires</code> and <code>version</code> keys.</p>
-<p>Each Pull Request introducing a new dependency or a breaking change should have updated the <code>setup.py</code> file, but it&apos;s better to check it again.</p>
-<p>The same for the <code>CHANGELOG.md</code> file, check that it&apos;s OK.</p>
-<blockquote>
-<p>If the <code>CHANGELOG.md</code> file is not enough filled-in, you can use this command to extract some useful commit messages:</p>
-<pre><code class="lang-bash">git <span class="hljs-built_in">log</span> --pretty=format:<span class="hljs-string">&quot;* %s&quot;</span> a..b
-</code></pre>
-</blockquote>
-<p>Commit changes if you made some.</p>
-<p>Then create a release tag:</p>
-<pre><code class="lang-bash"><span class="hljs-comment"># Replace X by the actual version number!</span>
-git tag X
-git push origin master X
-</code></pre>
-<h4 id="publish-on-pypi">Publish on PyPI</h4>
-<p>Build and upload the package to PyPI:</p>
-<pre><code class="lang-bash">python setup.py bdist_wheel upload
-</code></pre>
-<h4 id="test-the-package-installation">Test the package installation</h4>
-<p>Let&apos;s check if the package is installable from PyPI without errors
-using <a href="https://virtualenv.pypa.io/en/latest/" target="_blank">virtualenv</a>:</p>
-<pre><code class="lang-bash"><span class="hljs-built_in">cd</span> /tmp
-virtualenv <span class="hljs-built_in">test</span>-openfisca
-<span class="hljs-built_in">cd</span> <span class="hljs-built_in">test</span>-openfisca
-<span class="hljs-built_in">source</span> bin/activate
-pip install OpenFisca-France
-python -m openfisca_france.tests.test_basics
-deactivate
-</code></pre>
-<blockquote>
-<p>Test OpenFisca-Web-API installation if you wish.</p>
-</blockquote>
-<h4 id="next-steps">Next steps</h4>
-<p>Do the same for the remaining repositories to release.</p>
-<p>When all the suited repositories are released, you can announce the new release on the website news, Twitter, the mailing list, etc.</p>
 
                     
                     </section>
