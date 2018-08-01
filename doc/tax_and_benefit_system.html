@@ -53,7 +53,7 @@
         data-chapter-title="Tax and Benefit System"
         data-filepath="tax_and_benefit_system.md"
         data-basepath="."
-        data-revision="Tue Jul 17 2018 15:30:24 GMT+0000 (UTC)"
+        data-revision="Wed Aug 01 2018 09:29:43 GMT+0000 (UTC)"
         data-innerlanguage="">
     
 
@@ -823,13 +823,13 @@
 <p>The tax and benefit system is the higher-level instance in OpenFisca.
 Its goal is to model the legislation of a country.</p>
 <p>Basically a tax and benefit system contains simulation <a href="variables.html">variables</a> (source code) and <a href="parameters.html">legislation parameters</a> (data).</p>
-<p>This instance may host so many versions as there are countries in the world. </p>
+<p>This instance may host as many versions as there are countries in the world. </p>
 <blockquote>
 <p>The OpenFisca core engine is able to simulate any country legislation once it is (partially) represented as source code.</p>
 </blockquote>
-<p>Therefore you have to call at the beginning of your work, the one corresponding to your country of interest.</p>
+<p>Therefore you have to instantiate and use the version corresponding to your country of interest.</p>
 <h4 id="application-how-to-call-the-python-module">Application: how to call the Python module</h4>
-<p>For now only France system is well implemented, your first action should then be:</p>
+<p>The system for France is currently the only one well implemented, so your first action should be:</p>
 <pre><code class="lang-python"><span class="hljs-comment"># Call module describing the French System</span>
 <span class="hljs-keyword">from</span> openfisca_france <span class="hljs-keyword">import</span> FranceTaxBenefitSystem
 
