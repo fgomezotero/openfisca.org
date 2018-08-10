@@ -53,7 +53,7 @@
         data-chapter-title="Coding a formula: basic example"
         data-filepath="coding-the-legislation/10_basic_example.md"
         data-basepath=".."
-        data-revision="Wed Aug 01 2018 09:29:43 GMT+0000 (UTC)"
+        data-revision="Fri Aug 10 2018 09:43:57 GMT+0000 (UTC)"
         data-innerlanguage="">
     
 
@@ -832,32 +832,36 @@
         <span class="hljs-keyword">return</span> salary * <span class="hljs-number">0.25</span>
 </code></pre>
 <p>Let&apos;s explain in details the different parts of the code:</p>
+<h3 id="the-variable-name">The variable name</h3>
+<p><code>class flat_tax_on_salary(Variable):</code> declares a new variable named <code>flat_tax_on_salary</code>.  You can check out our recommended <a href="../contribute/variables-naming.html">naming conventions</a>.</p>
+<h3 id="the-variable-attributes">The variable attributes</h3>
+<p>All variables have a set of attributes.</p>
 <ul>
-<li><code>class flat_tax_on_salary(Variable):</code> declares a new variable with the name <code>flat_tax_on_salary</code>.</li>
-<li>Metadatas:<ul>
-<li><code>value_type = float</code> declares the type of the variable. Possible types are the basic python types:<ul>
+<li><code>value_type</code> defines the type of the formula output. Possible types are the basic python types. 
+Note however that OpenFisca uses NumPy to <a href="25_vectorial_computing.html">run calculations vectorially</a>,
+so the actual type of data may be slightly different from the builtin Python ones.
+Available types are :<ul>
 <li><code>bool</code>: boolean</li>
 <li><code>date</code>: date</li>
 <li><code>Enum</code>: discrete value (from an enumerable). <a href="20_input_variables.html#advanced-example-enumerations-enum">See details</a> in the next section.</li>
-<li><code>float</code>: float</li>
+<li><code>float</code>: float (Note that to reduce memory usage, float are stored on 32 bits using NumPy&apos;s <code>float32</code>)</li>
 <li><code>int</code>: integer</li>
 <li><code>str</code>: string</li>
 </ul>
 </li>
-<li><code>entity = Person</code> declares which entity the variable is defined for, e.g. a person, a family, a tax household, etc. The different available entities are defined by each tax and benefit system. In <code>openfisca-france</code>, a variable can be defined for an <code>Individu</code>, a <code>Famille</code>, a <code>FoyerFiscal</code>, or a <code>Menage</code>.</li>
-<li><code>label = u&quot;Individualized...&quot;</code> gives, in a human-readable language, concise information about the variable.</li>
-<li><code>definition_period = MONTH</code> states that the variable will be computed on months.</li>
+<li><code>entity</code> defines who or what group the variable concerns, e.g. individuals, households, families. </li>
+<li><code>definition_period</code> defines the period on which the variable is calculated. It can be <code>MONTH</code> (e.g. salary), <code>YEAR</code> (e.g. income taxes), or ETERNITY (e.g. date of birth)</li>
+<li><code>label</code> is a human friendly way to describe the variable</li>
+<li><code>reference</code> is a list of relevant legislative reference for this variables (usually URLs the text of the law or another trustworthy source)</li>
 </ul>
-</li>
-<li>Formula:<ul>
+<h3 id="the-formula">The formula</h3>
+<ul>
 <li><code>def formula(person, period):</code> declares the formula that will be used to calculate the <code>flat_tax_on_salary</code> for a given <code>person</code> at a given <code>period</code>. Because <code>definition_period = MONTH</code>, <code>period</code> is constrained to be a month.</li>
 <li><code>salary = person(&apos;salary&apos;, period)</code> calculates the salary of the person, for the given month. This will, of course, work only if <code>salary</code> is another variable in the tax and benefit system.</li>
 <li><code>return salary * 0.25</code> returns the result for the given period.</li>
-<li><a href="40_legislation_evolutions.html">Dated Formulas</a> have a start and/or an end date.<h2 id="testing-a-formula">Testing a formula</h2>
-</li>
+<li><a href="40_legislation_evolutions.html">Dated Formulas</a> have a start and/or an end date.</li>
 </ul>
-</li>
-</ul>
+<h2 id="testing-a-formula">Testing a formula</h2>
 <p>To make sure that the formula you have just written works the way you expect, you have to test it. Tests about legislation are written in a <a href="writing_yaml_tests.html">YAML syntax</a>. The <code>flat_tax_on_salary</code> formula can for instance be tested with the following test file:</p>
 <pre><code class="lang-yaml">- name: &quot;Flax tax on salary - No income&quot;
   period: 2017-01
