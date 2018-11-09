@@ -158,7 +158,7 @@ Every person in a group entity needs a role (e.g. parent)</p>
 </ul>
 </div></blockquote>
 <div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
-  <span class="nt">&quot;persons&quot;</span><span class="p">:</span> <span class="p">{</span> 
+  <span class="nt">&quot;persons&quot;</span><span class="p">:</span> <span class="p">{</span>
     <span class="nt">&quot;Ricarda&quot;</span><span class="p">:</span> <span class="p">{},</span>
     <span class="nt">&quot;Bob&quot;</span><span class="p">:</span> <span class="p">{},</span>
     <span class="nt">&quot;Bill&quot;</span><span class="p">:</span> <span class="p">{},</span>
@@ -186,13 +186,13 @@ Every person in a group entity needs a role (e.g. parent)</p>
 <div class="section" id="adding-information-to-entities">
 <span id="adding-information-to-entities"></span><h3>Adding information to entities<a class="headerlink" href="#adding-information-to-entities" title="Permalink to this headline">¶</a></h3>
 <p>To run a precise calculation, you can provide information on each person and group entity.</p>
-<p>These are the input <a class="reference external" href="variables.html">variables</a> of your simulation.</p>
+<p>These are the input <a class="reference internal" href="../key-concepts/variables.html"><span class="doc">variables</span></a> of your simulation.</p>
 <p>To provide an input variable, insert the value in the json, for the corresponding time period (e.g. &#8216;2015-06&#8217;) and entity (e.g. &#8216;person&#8217;, &#8216;household&#8217;).</p>
 <p>The time period must respect the <a class="reference internal" href="../coding-the-legislation/35_periods.html"><span class="doc">definition period</span></a> of the variable, and the entity must be the one the variable is defined for.</p>
 <blockquote>
 <div>For example, if Ricarda has a salary (defined monthly for a Person) of 3500/month until september 2016, and 4000/month after that and if household_2 were tenant and became homeowners in march 2016 (housing_occupancy_status is defined monthly for a household) of the 57 sqm apartment they live in, you would write:</div></blockquote>
 <div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
-  <span class="nt">&quot;persons&quot;</span><span class="p">:</span> <span class="p">{</span> 
+  <span class="nt">&quot;persons&quot;</span><span class="p">:</span> <span class="p">{</span>
     <span class="nt">&quot;Ricarda&quot;</span><span class="p">:</span> <span class="p">{</span>
       <span class="nt">&quot;salary&quot;</span><span class="p">:</span> <span class="p">{</span>
         <span class="nt">&quot;2016-01&quot;</span><span class="p">:</span> <span class="mi">3500</span><span class="p">,</span>
@@ -259,7 +259,7 @@ Every person in a group entity needs a role (e.g. parent)</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p><strong>Note that due to the default value system in OpenFisca, the variables that have not been defined explicitly are either calculated or take on their <a class="reference external" href="variables.html#default-values">default value</a>.</strong></p>
+<p><strong>Note that due to the default value system in OpenFisca, the variables that have not been defined explicitly are either calculated or take on their <a class="reference external" href="/key-concepts/variables.html#default-values">default value</a>.</strong></p>
 </div>
 </div>
 <div class="section" id="computing-a-variable">
@@ -269,7 +269,7 @@ Every person in a group entity needs a role (e.g. parent)</p>
 <blockquote>
 <div>for example, to compute Ricarda&#8217;s june income tax (defined monthly for a person) and household_2&#8217;s housing tax (defined yearly for a household), you would write:</div></blockquote>
 <div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
-  <span class="nt">&quot;persons&quot;</span><span class="p">:</span> <span class="p">{</span> 
+  <span class="nt">&quot;persons&quot;</span><span class="p">:</span> <span class="p">{</span>
     <span class="nt">&quot;Ricarda&quot;</span><span class="p">:</span> <span class="p">{</span>
       <span class="nt">&quot;salary&quot;</span><span class="p">:</span> <span class="p">{</span>
         <span class="nt">&quot;2016-01&quot;</span><span class="p">:</span> <span class="mi">3500</span><span class="p">,</span>
@@ -350,70 +350,70 @@ Every person in a group entity needs a role (e.g. parent)</p>
   <span class="nt">&quot;households&quot;</span><span class="p">:</span> <span class="p">{</span>
     <span class="nt">&quot;household_1&quot;</span><span class="p">:</span> <span class="p">{</span>
       <span class="nt">&quot;parents&quot;</span><span class="p">:</span> <span class="p">[</span>
-        <span class="s2">&quot;Ricarda&quot;</span><span class="p">,</span> 
+        <span class="s2">&quot;Ricarda&quot;</span><span class="p">,</span>
         <span class="s2">&quot;Bob&quot;</span>
       <span class="p">]</span>
-    <span class="p">},</span> 
+    <span class="p">},</span>
     <span class="nt">&quot;household_2&quot;</span><span class="p">:</span> <span class="p">{</span>
       <span class="nt">&quot;accomodation_size&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="nt">&quot;2016-01&quot;</span><span class="p">:</span> <span class="mi">57</span><span class="p">,</span> 
-        <span class="nt">&quot;2016-02&quot;</span><span class="p">:</span> <span class="mi">57</span><span class="p">,</span> 
-        <span class="nt">&quot;2016-03&quot;</span><span class="p">:</span> <span class="mi">57</span><span class="p">,</span> 
-        <span class="nt">&quot;2016-04&quot;</span><span class="p">:</span> <span class="mi">57</span><span class="p">,</span> 
-        <span class="nt">&quot;2016-05&quot;</span><span class="p">:</span> <span class="mi">57</span><span class="p">,</span> 
-        <span class="nt">&quot;2016-06&quot;</span><span class="p">:</span> <span class="mi">57</span><span class="p">,</span> 
-        <span class="nt">&quot;2016-07&quot;</span><span class="p">:</span> <span class="mi">57</span><span class="p">,</span> 
-        <span class="nt">&quot;2016-08&quot;</span><span class="p">:</span> <span class="mi">57</span><span class="p">,</span> 
-        <span class="nt">&quot;2016-09&quot;</span><span class="p">:</span> <span class="mi">57</span><span class="p">,</span> 
-        <span class="nt">&quot;2016-10&quot;</span><span class="p">:</span> <span class="mi">57</span><span class="p">,</span> 
-        <span class="nt">&quot;2016-11&quot;</span><span class="p">:</span> <span class="mi">57</span><span class="p">,</span> 
+        <span class="nt">&quot;2016-01&quot;</span><span class="p">:</span> <span class="mi">57</span><span class="p">,</span>
+        <span class="nt">&quot;2016-02&quot;</span><span class="p">:</span> <span class="mi">57</span><span class="p">,</span>
+        <span class="nt">&quot;2016-03&quot;</span><span class="p">:</span> <span class="mi">57</span><span class="p">,</span>
+        <span class="nt">&quot;2016-04&quot;</span><span class="p">:</span> <span class="mi">57</span><span class="p">,</span>
+        <span class="nt">&quot;2016-05&quot;</span><span class="p">:</span> <span class="mi">57</span><span class="p">,</span>
+        <span class="nt">&quot;2016-06&quot;</span><span class="p">:</span> <span class="mi">57</span><span class="p">,</span>
+        <span class="nt">&quot;2016-07&quot;</span><span class="p">:</span> <span class="mi">57</span><span class="p">,</span>
+        <span class="nt">&quot;2016-08&quot;</span><span class="p">:</span> <span class="mi">57</span><span class="p">,</span>
+        <span class="nt">&quot;2016-09&quot;</span><span class="p">:</span> <span class="mi">57</span><span class="p">,</span>
+        <span class="nt">&quot;2016-10&quot;</span><span class="p">:</span> <span class="mi">57</span><span class="p">,</span>
+        <span class="nt">&quot;2016-11&quot;</span><span class="p">:</span> <span class="mi">57</span><span class="p">,</span>
         <span class="nt">&quot;2016-12&quot;</span><span class="p">:</span> <span class="mi">57</span>
-      <span class="p">},</span> 
+      <span class="p">},</span>
       <span class="nt">&quot;children&quot;</span><span class="p">:</span> <span class="p">[</span>
         <span class="s2">&quot;Janet&quot;</span>
-      <span class="p">],</span> 
+      <span class="p">],</span>
       <span class="nt">&quot;housing_occupancy_status&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="nt">&quot;2016-01&quot;</span><span class="p">:</span> <span class="s2">&quot;Tenant&quot;</span><span class="p">,</span> 
-        <span class="nt">&quot;2016-02&quot;</span><span class="p">:</span> <span class="s2">&quot;Tenant&quot;</span><span class="p">,</span> 
-        <span class="nt">&quot;2016-03&quot;</span><span class="p">:</span> <span class="s2">&quot;Owner&quot;</span><span class="p">,</span> 
-        <span class="nt">&quot;2016-04&quot;</span><span class="p">:</span> <span class="s2">&quot;Owner&quot;</span><span class="p">,</span> 
-        <span class="nt">&quot;2016-05&quot;</span><span class="p">:</span> <span class="s2">&quot;Owner&quot;</span><span class="p">,</span> 
-        <span class="nt">&quot;2016-06&quot;</span><span class="p">:</span> <span class="s2">&quot;Owner&quot;</span><span class="p">,</span> 
-        <span class="nt">&quot;2016-07&quot;</span><span class="p">:</span> <span class="s2">&quot;Owner&quot;</span><span class="p">,</span> 
-        <span class="nt">&quot;2016-08&quot;</span><span class="p">:</span> <span class="s2">&quot;Owner&quot;</span><span class="p">,</span> 
-        <span class="nt">&quot;2016-09&quot;</span><span class="p">:</span> <span class="s2">&quot;Owner&quot;</span><span class="p">,</span> 
-        <span class="nt">&quot;2016-10&quot;</span><span class="p">:</span> <span class="s2">&quot;Owner&quot;</span><span class="p">,</span> 
-        <span class="nt">&quot;2016-11&quot;</span><span class="p">:</span> <span class="s2">&quot;Owner&quot;</span><span class="p">,</span> 
+        <span class="nt">&quot;2016-01&quot;</span><span class="p">:</span> <span class="s2">&quot;Tenant&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;2016-02&quot;</span><span class="p">:</span> <span class="s2">&quot;Tenant&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;2016-03&quot;</span><span class="p">:</span> <span class="s2">&quot;Owner&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;2016-04&quot;</span><span class="p">:</span> <span class="s2">&quot;Owner&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;2016-05&quot;</span><span class="p">:</span> <span class="s2">&quot;Owner&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;2016-06&quot;</span><span class="p">:</span> <span class="s2">&quot;Owner&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;2016-07&quot;</span><span class="p">:</span> <span class="s2">&quot;Owner&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;2016-08&quot;</span><span class="p">:</span> <span class="s2">&quot;Owner&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;2016-09&quot;</span><span class="p">:</span> <span class="s2">&quot;Owner&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;2016-10&quot;</span><span class="p">:</span> <span class="s2">&quot;Owner&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;2016-11&quot;</span><span class="p">:</span> <span class="s2">&quot;Owner&quot;</span><span class="p">,</span>
         <span class="nt">&quot;2016-12&quot;</span><span class="p">:</span> <span class="s2">&quot;Owner&quot;</span>
-      <span class="p">},</span> 
+      <span class="p">},</span>
       <span class="nt">&quot;housing_tax&quot;</span><span class="p">:</span> <span class="p">{</span>
         <span class="nt">&quot;2016&quot;</span><span class="p">:</span> <span class="mf">570.0</span>
-      <span class="p">},</span> 
+      <span class="p">},</span>
       <span class="nt">&quot;parents&quot;</span><span class="p">:</span> <span class="p">[</span>
         <span class="s2">&quot;Bill&quot;</span>
       <span class="p">]</span>
     <span class="p">}</span>
-  <span class="p">},</span> 
+  <span class="p">},</span>
   <span class="nt">&quot;persons&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;Bill&quot;</span><span class="p">:</span> <span class="p">{},</span> 
-    <span class="nt">&quot;Bob&quot;</span><span class="p">:</span> <span class="p">{},</span> 
-    <span class="nt">&quot;Janet&quot;</span><span class="p">:</span> <span class="p">{},</span> 
+    <span class="nt">&quot;Bill&quot;</span><span class="p">:</span> <span class="p">{},</span>
+    <span class="nt">&quot;Bob&quot;</span><span class="p">:</span> <span class="p">{},</span>
+    <span class="nt">&quot;Janet&quot;</span><span class="p">:</span> <span class="p">{},</span>
     <span class="nt">&quot;Ricarda&quot;</span><span class="p">:</span> <span class="p">{</span>
       <span class="nt">&quot;income_tax&quot;</span><span class="p">:</span> <span class="p">{</span>
         <span class="nt">&quot;2016-06&quot;</span><span class="p">:</span> <span class="mf">525.0</span>
-      <span class="p">},</span> 
+      <span class="p">},</span>
       <span class="nt">&quot;salary&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="nt">&quot;2016-01&quot;</span><span class="p">:</span> <span class="mi">3500</span><span class="p">,</span> 
-        <span class="nt">&quot;2016-02&quot;</span><span class="p">:</span> <span class="mi">3500</span><span class="p">,</span> 
-        <span class="nt">&quot;2016-03&quot;</span><span class="p">:</span> <span class="mi">3500</span><span class="p">,</span> 
-        <span class="nt">&quot;2016-04&quot;</span><span class="p">:</span> <span class="mi">3500</span><span class="p">,</span> 
-        <span class="nt">&quot;2016-05&quot;</span><span class="p">:</span> <span class="mi">3500</span><span class="p">,</span> 
-        <span class="nt">&quot;2016-06&quot;</span><span class="p">:</span> <span class="mi">3500</span><span class="p">,</span> 
-        <span class="nt">&quot;2016-07&quot;</span><span class="p">:</span> <span class="mi">3500</span><span class="p">,</span> 
-        <span class="nt">&quot;2016-08&quot;</span><span class="p">:</span> <span class="mi">3500</span><span class="p">,</span> 
-        <span class="nt">&quot;2016-09&quot;</span><span class="p">:</span> <span class="mi">4000</span><span class="p">,</span> 
-        <span class="nt">&quot;2016-10&quot;</span><span class="p">:</span> <span class="mi">4000</span><span class="p">,</span> 
-        <span class="nt">&quot;2016-11&quot;</span><span class="p">:</span> <span class="mi">4000</span><span class="p">,</span> 
+        <span class="nt">&quot;2016-01&quot;</span><span class="p">:</span> <span class="mi">3500</span><span class="p">,</span>
+        <span class="nt">&quot;2016-02&quot;</span><span class="p">:</span> <span class="mi">3500</span><span class="p">,</span>
+        <span class="nt">&quot;2016-03&quot;</span><span class="p">:</span> <span class="mi">3500</span><span class="p">,</span>
+        <span class="nt">&quot;2016-04&quot;</span><span class="p">:</span> <span class="mi">3500</span><span class="p">,</span>
+        <span class="nt">&quot;2016-05&quot;</span><span class="p">:</span> <span class="mi">3500</span><span class="p">,</span>
+        <span class="nt">&quot;2016-06&quot;</span><span class="p">:</span> <span class="mi">3500</span><span class="p">,</span>
+        <span class="nt">&quot;2016-07&quot;</span><span class="p">:</span> <span class="mi">3500</span><span class="p">,</span>
+        <span class="nt">&quot;2016-08&quot;</span><span class="p">:</span> <span class="mi">3500</span><span class="p">,</span>
+        <span class="nt">&quot;2016-09&quot;</span><span class="p">:</span> <span class="mi">4000</span><span class="p">,</span>
+        <span class="nt">&quot;2016-10&quot;</span><span class="p">:</span> <span class="mi">4000</span><span class="p">,</span>
+        <span class="nt">&quot;2016-11&quot;</span><span class="p">:</span> <span class="mi">4000</span><span class="p">,</span>
         <span class="nt">&quot;2016-12&quot;</span><span class="p">:</span> <span class="mi">4000</span>
       <span class="p">}</span>
     <span class="p">}</span>

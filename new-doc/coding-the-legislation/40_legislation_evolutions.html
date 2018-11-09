@@ -263,7 +263,7 @@
 </pre></div>
 </div>
 <p>Only a few characters changed in comparison with the last example: the suffix <code class="docutils literal"><span class="pre">_2005_06</span></code> has been added to the second formula name.</p>
-<p>Note that if <code class="docutils literal"><span class="pre">flat_tax_on_salary</span></code> is calculated <strong>before</strong> <code class="docutils literal"><span class="pre">2005-05-31</span></code> (included), <em>none</em> of the two formulas is used, as they are <em>both inactive</em> at this time. Instead, <strong>the variable <a class="reference external" href="variables.html#default-values">default value</a> is returned</strong>.</p>
+<p>Note that if <code class="docutils literal"><span class="pre">flat_tax_on_salary</span></code> is calculated <strong>before</strong> <code class="docutils literal"><span class="pre">2005-05-31</span></code> (included), <em>none</em> of the two formulas is used, as they are <em>both inactive</em> at this time. Instead, <strong>the variable <a class="reference external" href="/key-concepts/variables.html#default-values">default value</a> is returned</strong>.</p>
 </div>
 <div class="section" id="variable-end">
 <span id="variable-end"></span><h2>Variable end<a class="headerlink" href="#variable-end" title="Permalink to this headline">¶</a></h2>
@@ -283,7 +283,7 @@
 </pre></div>
 </div>
 <p>If <code class="docutils literal"><span class="pre">progressive_income_tax</span></code> is called <strong>before</strong> <code class="docutils literal"><span class="pre">2005-05-31</span></code>(included), <code class="docutils literal"><span class="pre">formula</span></code> will be used.</p>
-<p>However, if <code class="docutils literal"><span class="pre">progressive_income_tax</span></code> is calculated <strong>after</strong> <code class="docutils literal"><span class="pre">2005-06-01</span></code> (included), <code class="docutils literal"><span class="pre">formula</span></code> is <strong>not</strong> used, as it is not active anymore at this time. Instead, <strong>the variable <a class="reference external" href="variables.html#default-values">default value</a> is returned</strong>.</p>
+<p>However, if <code class="docutils literal"><span class="pre">progressive_income_tax</span></code> is calculated <strong>after</strong> <code class="docutils literal"><span class="pre">2005-06-01</span></code> (included), <code class="docutils literal"><span class="pre">formula</span></code> is <strong>not</strong> used, as it is not active anymore at this time. Instead, <strong>the variable <a class="reference external" href="/key-concepts/variables.html#default-values">default value</a> is returned</strong>.</p>
 <p>Note that:</p>
 <ul class="simple">
 <li>The <code class="docutils literal"><span class="pre">end</span></code> day is <strong>inclusive</strong>: it is the last day a variable and its formulas are active (and not the first day it is not active anymore).</li>

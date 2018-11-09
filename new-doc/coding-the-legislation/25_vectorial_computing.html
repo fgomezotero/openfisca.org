@@ -146,7 +146,7 @@
 <p>The practical benefit is that computations are almost as expensive for one entity as they are for hundred thousands. This is how datasets can be analysed and how reforms can be modelled accurately. However, to support this feature, you will need to apply some constraints on how you write formulas.</p>
 <div class="section" id="formulas-always-return-vectors">
 <span id="formulas-always-return-vectors"></span><h2>Formulas always return vectors<a class="headerlink" href="#formulas-always-return-vectors" title="Permalink to this headline">¶</a></h2>
-<p>Each <a class="reference external" href="variables.html#formulas">formula</a> computation in OpenFisca must return a vector.</p>
+<p>Each <a class="reference external" href="/key-concepts/variables.html#formulas">formula</a> computation in OpenFisca must return a vector.</p>
 <p>For instance, for a simulation containing 3 persons whose ages are 41, 42 and 45, executing the following formula:</p>
 <div class="highlight-py"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">formula</span><span class="p">(</span><span class="n">persons</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters</span><span class="p">):</span>
     <span class="n">age</span> <span class="o">=</span> <span class="n">persons</span><span class="p">(</span><span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="n">period</span><span class="p">)</span>
